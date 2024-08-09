@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/settings">
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.shishkin.luxuriouswatchface.settings.Settings"
+        android:label="Settings2" >
+        <action
+            android:id="@+id/action_settings_to_colorsPicker"
+            app:destination="@id/colorsPicker" />
+        <argument
+            android:name="settingsChanges"
+            app:argType="com.shishkin.luxuriouswatchface.models.SettingsChanges"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/colorsPicker"
+        android:name="com.shishkin.luxuriouswatchface.settings.ColorsPicker"
+        android:label="ColorsPicker" >
+        <argument
+            android:name="settingsId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_colorsPicker_to_settings"
+            app:destination="@id/settings" />
+    </fragment>
+</navigation>

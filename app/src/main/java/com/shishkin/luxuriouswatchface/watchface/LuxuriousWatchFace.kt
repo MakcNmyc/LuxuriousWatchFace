@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Rect
+import android.util.Log
 import android.view.SurfaceHolder
 import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.ComplicationSlotsManager
@@ -85,6 +86,7 @@ class LuxuriousWatchFace : WatchFaceService() {
 
             drawBackground(canvas)
             drawHands(canvas, zonedDateTime, renderParameters.drawMode)
+            drawTexts(canvas)
         }
 
         private fun drawBackground(canvas: Canvas){
@@ -172,6 +174,28 @@ class LuxuriousWatchFace : WatchFaceService() {
             val y = data.centerPoint.y - cos(handAngle * PI / 180 )  * data.centerPoint.y
 
             return Point(x.toFloat(), y.toFloat())
+        }
+
+        private fun drawTexts(canvas: Canvas){
+            drawText(canvas, renderData.topTextData)
+        }
+
+        private fun drawText(canvas: Canvas, textData: TextData){
+
+            val text = textData.text
+            val paint = Paint().apply {
+                color = textData.color
+                    typeface = renderData.topTextData.font
+                this.textSize =  textData.textSize
+            }
+
+            Log.e("qwe", "drawTexts textSize = ${textData.textSize} canvas.width = ${canvas.width}  canvas.height = ${canvas.height} yCenterOffset = ${textData.yCenterOffset}")
+
+            canvas.drawText (text,
+                (canvas.width - paint.measureText(text)) / 2f,
+                canvas.height / 2f + textData.yCenterOffset,
+                paint
+            )
         }
 
 

@@ -7,10 +7,10 @@
       </SelectionState>
       <SelectionState runConfigName="app.LuxuriousWatchFace">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-07-24T10:12:23.744330200Z">
+        <DropdownSelection timestamp="2024-08-05T13:29:30.734811400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\user\.android\avd\Wear_OS_Small_Round_API_30.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\user\.android\avd\new_test_Wear_OS_Small_Round_API_30.avd" />
             </handle>
           </Target>
         </DropdownSelection>

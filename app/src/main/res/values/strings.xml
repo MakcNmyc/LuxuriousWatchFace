@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Luxurious watch face</string>
+    <string name="watchface_label">Luxurious</string>
+    <string name="settings_title">All settings</string>
+    <string name="settings_top_text">Top text</string>
+    <string name="settings_text_edit_hint">Enter text here</string>
 
-
-    <string name="watchface_label">Rolex</string>
+    <string name="settings_id_argument">settingsId</string>
+    <string name="settings_changes_argument">settingsChanges</string>
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="settings_element_text_size">16sp</dimen>
+    <dimen name="settings_elements_padding">5dp</dimen>
+    <dimen name="round_color_width">38dp</dimen>
+    <dimen name="round_color_height">38dp</dimen>
+    <dimen name="colors_element_width">46dp</dimen>
+    <dimen name="colors_element_height">46dp</dimen>
+    <dimen name="colors_element_padding">3dp</dimen>
+
+    <dimen name="top_text_size">32sp</dimen>
+    <dimen name="bottom_text_size">16sp</dimen>
+</resources>
