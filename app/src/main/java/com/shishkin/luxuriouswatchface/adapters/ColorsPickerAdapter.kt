@@ -2,19 +2,19 @@ package com.shishkin.luxuriouswatchface.adapters
 
 import android.util.Log
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.Navigation
 import com.shishkin.luxuriouswatchface.databinding.ColorsElementBinding
 import com.shishkin.luxuriouswatchface.models.ColorsElement
+import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
+import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchemaImp
 import com.shishkin.luxuriouswatchface.util.ColorImageCreator
 import com.shishkin.luxuriouswatchface.viewmodels.SettingsViewModel
 import javax.inject.Inject
 
 class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsElement>)  : ModelAdapter<ColorsElement> (itemCallback)  {
 
-    lateinit var owner: Fragment
+//    private lateinit var owner: Fragment
+    lateinit var settingsEditor: SettingsEditor
 
     override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<ColorsElement, ColorsElementBinding> =
         { parent ->
@@ -34,9 +34,9 @@ class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsE
             if(settingsId == SettingsViewModel.SETTINGS_ID_NOT_SET) return@setOnClickListener
             Log.e("settingsIdFlow", "setUpData ClickListener color is ${model.color}")
 
+//            owner.setFragmentResult(Settings.SETTINGS_CHANGE, bundleOf(Settings.SETTINGS_CHANGE to ))
 
-            // Use the Kotlin extension in the fragment-ktx artifact.
-            owner.setFragmentResult("requestKey", bundleOf("bundleKey" to "result"))
+            settingsEditor.set(SettingsSchemaImp.BACKGROUND_COLOR, model.color)
 
             Navigation.findNavController(binding.root).navigateUp()
 //            Navigation.findNavController(binding.root).navigate(

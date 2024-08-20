@@ -42,7 +42,6 @@ data class RenderDataInit(
 
 fun createRenderData(context: Context) : RenderData{
 
-    val resources = context.resources
     val font = ResourcesCompat.getFont(context, R.font.afterlife_regular)!!
 
     return RenderData(
@@ -59,9 +58,9 @@ fun createRenderData(context: Context) : RenderData{
             heightPercent = 45
         ),
         TextData(
-            "qwerty uiopasd",
+            "qwerty uddiopas",
             R.dimen.top_text_size.fromDimension(context),
-            -20,
+            R.dimen.top_y_offset.fromDimension(context).toInt(),
             font,
             Color.BLACK,
         ),

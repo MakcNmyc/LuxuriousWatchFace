@@ -3,6 +3,7 @@ package com.shishkin.luxuriouswatchface.util
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -31,7 +32,7 @@ inline fun <T> Fragment.setUpBaseList(
     pagedAdapter: PagedListAdapter<T, RecyclerView.ViewHolder>,
     layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
 ) {
-    this.setUpPagedList( pagedListProducer, pagedAdapter)
+    this.setUpPagedList(pagedListProducer, pagedAdapter)
     recyclerView.apply {
         setHasFixedSize(true)
         this.layoutManager = layoutManager
@@ -48,8 +49,9 @@ inline fun <T> Fragment.setUpPagedList(
     pagedListProducer().observe(this) { newPagedList -> pagedAdapter.submitList(newPagedList) }
 }
 
-fun <V> Array<V>.asPagedList() = LivePagedListBuilder(
-    ListDataSource.Factory(this),
+// TODO: Migrate to pager3
+fun <V> Array<V>.asPagedList(onSourceCreated: ((ListDataSource<V>) -> Unit)? = null) = LivePagedListBuilder(
+    ListDataSource.Factory(this, onSourceCreated),
     PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setPageSize(PAGING_SIZE)
@@ -61,6 +63,8 @@ fun <V> Array<V>.asPagedList() = LivePagedListBuilder(
 fun Int.fromDimension(context: Context) =
     context.resources.getDimension(this)
 
+fun Boolean.toVisibility() =
+    if (this) View.VISIBLE else View.GONE
 
 class ListDataSource<V>(private val itemList: Array<V>) : PositionalDataSource<V>() {
 
@@ -89,8 +93,10 @@ class ListDataSource<V>(private val itemList: Array<V>) : PositionalDataSource<V
         )
     }
 
-    class Factory<V>(private val itemList: Array<V>): DataSource.Factory<Int, V>() {
-        override fun create(): DataSource<Int, V>  = ListDataSource(itemList)
+    class Factory<V>(private val itemList: Array<V>, private val onSourceCreated: ((ListDataSource<V>) -> Unit)?): DataSource.Factory<Int, V>() {
+        override fun create(): DataSource<Int, V>  = ListDataSource(itemList).also {
+            onSourceCreated?.let { it1 -> it1(it) }
+        }
     }
 
 }

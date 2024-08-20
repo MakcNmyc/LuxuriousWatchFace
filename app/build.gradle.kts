@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 //    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.wear.watchface:watchface:1.1.0")
+    implementation("androidx.wear.watchface:watchface-editor:1.1.0")
     implementation("androidx.wear:wear:1.2.0")
 
     implementation("androidx.viewpager2:viewpager2:1.0.0")

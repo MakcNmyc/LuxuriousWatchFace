@@ -16,6 +16,13 @@ import androidx.wear.watchface.WatchFaceService
 import androidx.wear.watchface.WatchFaceType
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
+import androidx.wear.watchface.style.UserStyleSchema
+import com.shishkin.luxuriouswatchface.di.AppEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import java.time.ZonedDateTime
 import kotlin.math.PI
 import kotlin.math.cos
@@ -44,6 +51,11 @@ class LuxuriousWatchFace : WatchFaceService() {
         )
     )
 
+    override fun createUserStyleSchema(): UserStyleSchema =
+        EntryPointAccessors.fromApplication(applicationContext, AppEntryPoint::class.java)
+            .createSettingsSchema()
+            .createUserStyleSchema(resources)
+
     class AnalogWatchCanvasRenderer(
         surfaceHolder: SurfaceHolder,
         currentUserStyleRepository: CurrentUserStyleRepository,
@@ -59,6 +71,22 @@ class LuxuriousWatchFace : WatchFaceService() {
         FRAME_PERIOD_MS_TICKING,
         clearWithBackgroundTintBeforeRenderingHighlightLayer = false
     ) {
+
+        private val scope: CoroutineScope =
+            CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+//        init {
+//            scope.launch {
+//                currentUserStyleRepository.userStyle.collect { userStyle ->
+//                    updateWatchFaceData(userStyle)
+//                }
+//            }
+//        }
+
+        override fun onDestroy() {
+            scope.cancel("AnalogWatchCanvasRenderer scope clear() request")
+            super.onDestroy()
+        }
 
         class SharedAssets : Renderer.SharedAssets {
             override fun onDestroy() {

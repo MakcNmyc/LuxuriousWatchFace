@@ -7,4 +7,7 @@
 
     <string name="settings_id_argument">settingsId</string>
     <string name="settings_changes_argument">settingsChanges</string>
+
+    <string name="setting_background_color_name">Background color</string>
+    <string name="setting_background_color_description">Background color for watch</string>
 </resources>

@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.shishkin.luxuriouswatchface.adapters.ColorsPickerAdapter
-import com.shishkin.luxuriouswatchface.databinding.SettingsListBinding
+import com.shishkin.luxuriouswatchface.databinding.ColorsListBinding
 import com.shishkin.luxuriouswatchface.util.createBinding
 import com.shishkin.luxuriouswatchface.util.setUpBaseList
 import com.shishkin.luxuriouswatchface.viewmodels.ColorsPickerViewModel
@@ -31,11 +31,11 @@ class ColorsPicker : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        return createBinding(inflater, container, SettingsListBinding::inflate)
+        return createBinding(inflater, container, ColorsListBinding::inflate)
             .also { binding ->
                 Log.e("qwe", "ColorsPicker createBinding")
 
-                adapter.owner = this
+                adapter.settingsEditor = (requireActivity() as MainActivity).settingsEditor
 
                 setUpBaseList(
                     binding.settingsList,
