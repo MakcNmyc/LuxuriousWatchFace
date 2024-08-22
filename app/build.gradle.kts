@@ -56,8 +56,9 @@ dependencies {
     implementation("androidx.wear.watchface:watchface-editor:1.1.0")
     implementation("androidx.wear:wear:1.2.0")
 
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
-    implementation("androidx.paging:paging-runtime:2.1.2")
+//    implementation("androidx.viewpager2:viewpager2:1.0.0")
+//    implementation("androidx.paging:paging-runtime:2.1.2")
+    implementation("androidx.paging:paging-runtime:3.1.1")
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")

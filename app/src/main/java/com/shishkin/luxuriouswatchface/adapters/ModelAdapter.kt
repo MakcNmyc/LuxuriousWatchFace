@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.luxuriouswatchface.models.ListElementModel
+import com.shishkin.luxuriouswatchface.models.SettingsData
 import javax.inject.Inject
 
 abstract class ModelAdapter<V : ListElementModel<*>>(itemCallback: ItemCallback<V>) :
-    PagedListAdapter<V, RecyclerView.ViewHolder>(itemCallback) {
+    PagingDataAdapter<V, RecyclerView.ViewHolder>(itemCallback) {
 
     abstract val vhProducer: (parent: ViewGroup) -> ModelViewHolder<V, *>
 
@@ -23,11 +24,13 @@ abstract class ModelAdapter<V : ListElementModel<*>>(itemCallback: ItemCallback<
 
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        Log.e("qwe", "onBindViewHolder position = $position")
+        Log.e("colorsPick", "onBindViewHolder position = $position")
         when (viewHolder) {
             is ModelProducerVH<*, *> -> viewHolder.setModel()
             is ModelViewHolder<*, *> -> getItem(position)?.let {
+                Log.e("colorsPick", "onBindViewHolder ModelViewHolder color = ${if(it is SettingsData) it.colorImage else "not settings"}")
                 (viewHolder as ModelViewHolder<V, *>).setModel(it)
+
             }
         }
     }
@@ -74,6 +77,7 @@ class ItemCallback<T : ListElementModel<*>> @Inject constructor() : DiffUtil.Ite
     }
 
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
+        Log.e("colorsPick", "DiffUtil.ItemCallback oldItem.id - ${oldItem.id} areContentsTheSame ${oldItem == newItem}")
         return oldItem == newItem
     }
 }

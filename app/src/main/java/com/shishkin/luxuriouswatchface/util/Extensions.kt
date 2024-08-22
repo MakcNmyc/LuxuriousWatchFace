@@ -7,16 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import androidx.paging.PagedListAdapter
-import androidx.paging.PositionalDataSource
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.WearableRecyclerView
-import com.shishkin.luxuriouswatchface.AppConfiguration.Companion.PAGING_SIZE
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 inline fun <T : ViewDataBinding> Fragment.createBinding(
     inflater: LayoutInflater,
@@ -26,38 +25,34 @@ inline fun <T : ViewDataBinding> Fragment.createBinding(
     lifecycleOwner = this@createBinding
 }
 
-inline fun <T> Fragment.setUpBaseList(
+fun <T : Any> Fragment.setUpBaseList(
     recyclerView: WearableRecyclerView,
-    crossinline pagedListProducer: ()-> LiveData<PagedList<T>>,
-    pagedAdapter: PagedListAdapter<T, RecyclerView.ViewHolder>,
+    pagedData: Flow<PagingData<T>?>,
+    adapter: PagingDataAdapter<T, RecyclerView.ViewHolder>,
     layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
 ) {
-    this.setUpPagedList(pagedListProducer, pagedAdapter)
+    this.setUpPagedList(pagedData, adapter)
     recyclerView.apply {
         setHasFixedSize(true)
         this.layoutManager = layoutManager
-        adapter = pagedAdapter
+        this.adapter = adapter
         isEdgeItemsCenteringEnabled = true
         isCircularScrollingGestureEnabled = false
     }
 }
 
-inline fun <T> Fragment.setUpPagedList(
-    pagedListProducer: ()-> LiveData<PagedList<T>>,
-    pagedAdapter: PagedListAdapter<T, RecyclerView.ViewHolder>
+fun <T : Any> Fragment.setUpPagedList(
+    pagedData: Flow<PagingData<T>?>,
+    adapter: PagingDataAdapter<T, RecyclerView.ViewHolder>
 ){
-    pagedListProducer().observe(this) { newPagedList -> pagedAdapter.submitList(newPagedList) }
-}
-
-// TODO: Migrate to pager3
-fun <V> Array<V>.asPagedList(onSourceCreated: ((ListDataSource<V>) -> Unit)? = null) = LivePagedListBuilder(
-    ListDataSource.Factory(this, onSourceCreated),
-    PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setPageSize(PAGING_SIZE)
-        .build()
-).build().also {
-    Log.e("qwe", "asPagedList")
+    this.viewLifecycleOwner.lifecycleScope.launch {
+        pagedData.collectLatest{ data ->
+            Log.e("colorsPick", "collectLatest paged data ${data}")
+            data?.let {
+                adapter.submitData(data)
+            }
+        }
+    }
 }
 
 fun Int.fromDimension(context: Context) =
@@ -66,37 +61,13 @@ fun Int.fromDimension(context: Context) =
 fun Boolean.toVisibility() =
     if (this) View.VISIBLE else View.GONE
 
-class ListDataSource<V>(private val itemList: Array<V>) : PositionalDataSource<V>() {
+fun <V : Any> List<V>.toPagingData() = PagingData.from(this)
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<V>) {
-        Log.e("qwe", "loadInitial requestedStartPosition = ${params.requestedStartPosition} and requestedLoadSize = ${params.requestedLoadSize}, itemListSize = ${itemList.size}")
+inline fun <reified T : Enum<T>> Int.toEnum(): T? =
+    if(this < 0) null
+        else enumValues<T>().firstOrNull { it.ordinal == this }
 
-        callback.onResult(
-            itemList
-                .drop(params.requestedStartPosition)
-                .take(params.requestedLoadSize)
-                .toList(),
-            0
-        )
-    }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<V>) {
+inline fun <reified T : Enum<T>> T.toInt(): Int =
+    this.ordinal
 
-        Log.e("qwe", "loadInitial startPosition = ${params.startPosition} and loadSize = ${params.loadSize}")
-
-        Log.e("qwe", "loadRange")
-        callback.onResult(
-            itemList
-                .drop(params.startPosition)
-                .take(params.loadSize)
-                .toList()
-        )
-    }
-
-    class Factory<V>(private val itemList: Array<V>, private val onSourceCreated: ((ListDataSource<V>) -> Unit)?): DataSource.Factory<Int, V>() {
-        override fun create(): DataSource<Int, V>  = ListDataSource(itemList).also {
-            onSourceCreated?.let { it1 -> it1(it) }
-        }
-    }
-
-}

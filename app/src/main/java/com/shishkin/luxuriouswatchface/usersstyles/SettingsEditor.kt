@@ -6,6 +6,7 @@ import androidx.wear.watchface.editor.EditorSession
 import androidx.wear.watchface.style.UserStyleSetting
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class SettingsEditor(
@@ -26,7 +27,7 @@ class SettingsEditor(
                 activity = activity
             )
 
-            editorSession.userStyle.collect{
+            editorSession.userStyle.collectLatest{
                 _state.value = State.Loading
 
                 val settings = HashMap<String, Any>()

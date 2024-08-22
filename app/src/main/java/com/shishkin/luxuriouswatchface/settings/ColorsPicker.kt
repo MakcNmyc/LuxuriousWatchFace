@@ -15,6 +15,7 @@ import com.shishkin.luxuriouswatchface.util.createBinding
 import com.shishkin.luxuriouswatchface.util.setUpBaseList
 import com.shishkin.luxuriouswatchface.viewmodels.ColorsPickerViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,19 +34,22 @@ class ColorsPicker : Fragment() {
 
         return createBinding(inflater, container, ColorsListBinding::inflate)
             .also { binding ->
-                Log.e("qwe", "ColorsPicker createBinding")
+                Log.e("qwe", "createBinding")
+
+                viewModel.initColorsData(requireContext())
 
                 adapter.settingsEditor = (requireActivity() as MainActivity).settingsEditor
 
                 setUpBaseList(
                     binding.settingsList,
-                    { viewModel.pagedList },
+                    viewModel.colorsData,
                     adapter,
                     GridLayoutManager(context, ROW_COUNT)
                 )
+
                 Log.e("qwe", "lifecycleScope collect settingsId")
-                lifecycleScope.launch{
-                    viewModel.settingsId.collect{
+                viewLifecycleOwner.lifecycleScope.launch{
+                    viewModel.settingsId.collectLatest{
                         Log.e("qwe", "lifecycleScope collect settingsId is $it")
                         adapter.settingsId = it
                     }

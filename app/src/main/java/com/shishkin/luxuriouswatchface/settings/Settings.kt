@@ -18,6 +18,7 @@ import com.shishkin.luxuriouswatchface.util.toVisibility
 import com.shishkin.luxuriouswatchface.viewmodels.MainActivityViewModel
 import com.shishkin.luxuriouswatchface.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,13 +34,13 @@ class Settings : Fragment() {
     private lateinit var settingsEditor: SettingsEditor
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+//
         settingsEditor = (requireActivity() as MainActivity).settingsEditor
-
-        viewModel.createPagedList(requireContext(), settingsEditor)
-
-        super.onCreate(savedInstanceState)
-    }
+//
+//        viewModel.createPagedData(requireContext(), settingsEditor)
+//
+//        super.onCreate(savedInstanceState)
+//    }
 
     //    override fun onCreate(savedInstanceState: Bundle?) {
 //
@@ -90,8 +91,8 @@ class Settings : Fragment() {
 ////                settingsEditor)
 ////        }
 //
-//        super.onCreate(savedInstanceState)
-//    }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,15 +102,13 @@ class Settings : Fragment() {
 
         Log.e("settingsIdFlow", "Settings onCreateView")
 
-
-
         return createBinding(inflater, container, SettingsListBinding::inflate)
             .also { binding ->
                 Log.e("settingsIdFlow", "createBinding")
 //                this.binding = binding
 
                 viewLifecycleOwner.lifecycleScope.launch {
-                    settingsEditor.state.collect { state ->
+                    settingsEditor.state.collectLatest { state ->
                         Log.e("settingsIdFlow", "settingsEditor state is ${state}")
                         (state == SettingsEditor.State.Ready).let { isReady ->
                             Log.e("settingsIdFlow", "settingsEditor visibility is ${isReady.toVisibility()}")
@@ -139,10 +138,12 @@ class Settings : Fragment() {
 //                }
 
 
+                viewModel.initSettingsData(requireContext(), settingsEditor)
+
                 adapter.title = viewModel.title
                 setUpBaseList(
                     binding.settingsList,
-                    { viewModel.pagedList },
+                    viewModel.settingsData,
                     adapter
                 )
 //                Log.e("settingsIdFlow", "viewModel.recyclerViewState = ${activityViewModel.recyclerViewState}")

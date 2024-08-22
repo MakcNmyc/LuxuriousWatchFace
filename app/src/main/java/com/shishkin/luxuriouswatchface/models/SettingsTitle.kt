@@ -1,6 +1,6 @@
 package com.shishkin.luxuriouswatchface.models
 
 data class SettingsTitle (
-    override val id: Int,
+    override val id: String,
     val title: String,
-) : ListElementModel<Int>
+) : ListElementModel<String>
