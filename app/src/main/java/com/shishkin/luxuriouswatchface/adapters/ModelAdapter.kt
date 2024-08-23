@@ -30,7 +30,6 @@ abstract class ModelAdapter<V : ListElementModel<*>>(itemCallback: ItemCallback<
             is ModelViewHolder<*, *> -> getItem(position)?.let {
                 Log.e("colorsPick", "onBindViewHolder ModelViewHolder color = ${if(it is SettingsData) it.colorImage else "not settings"}")
                 (viewHolder as ModelViewHolder<V, *>).setModel(it)
-
             }
         }
     }

@@ -140,7 +140,6 @@ class Settings : Fragment() {
 
                 viewModel.initSettingsData(requireContext(), settingsEditor)
 
-                adapter.title = viewModel.title
                 setUpBaseList(
                     binding.settingsList,
                     viewModel.settingsData,

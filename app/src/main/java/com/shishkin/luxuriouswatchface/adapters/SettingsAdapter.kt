@@ -9,22 +9,22 @@ import com.shishkin.luxuriouswatchface.databinding.SettingsEditTextBinding
 import com.shishkin.luxuriouswatchface.databinding.SettingsTextWithImageBinding
 import com.shishkin.luxuriouswatchface.databinding.SettingsTitleBinding
 import com.shishkin.luxuriouswatchface.models.SettingsData
-import com.shishkin.luxuriouswatchface.models.SettingsTitle
 import com.shishkin.luxuriouswatchface.models.toSettingsEditText
 import com.shishkin.luxuriouswatchface.models.toSettingsTextWithImage
+import com.shishkin.luxuriouswatchface.models.toSettingsTitle
 import com.shishkin.luxuriouswatchface.settings.SettingsDirections
 import javax.inject.Inject
 
 class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsData>)  : ModelAdapter<SettingsData> (itemCallback) {
 
-    lateinit var title: SettingsTitle
+//    lateinit var title: SettingsTitle
 
     companion object {
         const val TITLE = 0
         const val TEXT_WITH_IMAGE = 1
         const val EDIT_TEXT = 2
 
-        const val ITEM_PADDING = 1
+//        const val ITEM_PADDING = 1
     }
 
     override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<SettingsData, SettingsTextWithImageBinding> =
@@ -37,8 +37,12 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         }
 
     override fun getItemViewType(position: Int): Int =
-//        if (position == 0) TITLE else getItem(position - ITEM_PADDING)!!.type
-    getItem(position)!!.type
+        getItem(position)!!.type
+//    {
+//        val res = if (position == 0) TITLE else getItem(position - ITEM_PADDING)!!.type
+//        Log.e("colorsPick", "getItemViewType = ${res}")
+//        return res
+//    }
 
 //    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
 //        Log.e("settingsIdFlow", "adapterPosition = ${holder.adapterPosition}")
@@ -47,11 +51,11 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when(viewType){
-            TITLE -> ModelProducerVH(
+            TITLE -> ModelViewHolder(
                 parent,
                 SettingsTitleBinding::inflate,
                 this::setUpTitle
-            ) { title }
+            )
             EDIT_TEXT -> ModelViewHolder(
                 parent,
                 SettingsEditTextBinding::inflate,
@@ -61,11 +65,12 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         }
 
 //    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-////        Log.e("ColorsPicker", "onBindViewHolder position $position")
+////        Log.e("colorsPick", "onBindViewHolder position $position")
 //        super.onBindViewHolder(viewHolder, position - ITEM_PADDING)
 //    }
 
 //    override fun getItemCount(): Int {
+//        Log.e("colorsPick", "getItemCount count is ${super.getItemCount() + ITEM_PADDING}")
 //        return super.getItemCount() + ITEM_PADDING
 //    }
 
@@ -93,8 +98,8 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         }
     }
 
-    private fun setUpTitle(model: SettingsTitle, binding: SettingsTitleBinding) {
-        binding.model = model
+    private fun setUpTitle(model: SettingsData, binding: SettingsTitleBinding) {
+        binding.model = model.toSettingsTitle()
     }
 
     private fun setUpEditText(model: SettingsData, binding: SettingsEditTextBinding) {

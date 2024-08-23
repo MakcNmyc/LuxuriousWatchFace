@@ -8,10 +8,9 @@ import androidx.paging.PagingData
 import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
 import com.shishkin.luxuriouswatchface.models.SettingsData
-import com.shishkin.luxuriouswatchface.models.SettingsTitle
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
+import com.shishkin.luxuriouswatchface.usersstyles.SettingsRepository
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchemaImp
-import com.shishkin.luxuriouswatchface.util.toInt
 import com.shishkin.luxuriouswatchface.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,7 +25,14 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
 
 //    lateinit var settingsChanges: StateFlow<SettingsChanges?>
 
-    val title = SettingsTitle(TITLE_ID, context.resources.getString(R.string.settings_title))
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
+    private val title = SettingsData(
+        TITLE_ID,
+        SettingsAdapter.TITLE,
+        context.resources.getString(R.string.settings_title),
+    )
 
     private var _settingsData: MutableStateFlow<PagingData<SettingsData>?> = MutableStateFlow(null)
     var settingsData = _settingsData.asStateFlow()
@@ -56,13 +62,15 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
             viewModelScope.launch {
                 settingsEditor.settingsHolder.collectLatest{
                     Log.e("colorsPick", "collectLatest settingsHolder color is ${settingsEditor.settingsHolder.value[SettingsSchemaImp.BACKGROUND_COLOR]}")
-                    _settingsData.value = createPagedData(context, settingsEditor)
+                    _settingsData.value = createSettingsData(context, settingsEditor)
                 }
             }
     }
 
-    private fun createPagedData(context: Context, settingsEditor: SettingsEditor) =
-        getData(context, settingsEditor).toPagingData()
+    private fun createSettingsData(context: Context, settingsEditor: SettingsEditor) =
+        arrayListOf(title).apply {
+            addAll(settingsRepository.getSettingsData(context, settingsEditor))
+        }.toPagingData()
 
 //        pagedList = createSettingsList(context, settingsEditor).asPagedList{ dataSource ->
 //            viewModelScope.launch {
@@ -90,31 +98,6 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
 //                it.addAll(createSettingsList(context, settingsEditor))
 //            }
 //    }
-
-    private fun getData(context: Context, settingsEditor: SettingsEditor) : List<SettingsData> =
-        Log.e("colorsPick", "getData color is ${settingsEditor.settingsHolder.value[SettingsSchemaImp.BACKGROUND_COLOR]}").let {
-            if (settingsEditor.state.value != SettingsEditor.State.Ready)
-                Log.e("colorsPick", "SettingsViewModel getData settingsEditor state not ready!").let {
-                    arrayListOf()
-                }
-            else
-                arrayListOf(
-                    SettingsData(
-                        id = SettingsSchemaImp.BACKGROUND_COLOR,
-                        type = SettingsAdapter.TEXT_WITH_IMAGE,
-                        title = "qwe",
-                        colorImage = (settingsEditor.settingsHolder.value[SettingsSchemaImp.BACKGROUND_COLOR] as Long).toInt(),
-                        clickListenerType = SettingsAdapter.ClickListenerTypes.ColorPickListener.toInt()
-                    ),
-                    SettingsData(
-                        id = "ewq",
-                        type = SettingsAdapter.EDIT_TEXT,
-                        title = "ewq",
-                        text = "ewq",
-                    ),
-                )
-        }
-
 
 //        return arrayOf(
 //            SettingsTextWithImage(
