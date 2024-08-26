@@ -8,23 +8,24 @@ package com.shishkin.luxuriouswatchface.settings
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.shishkin.luxuriouswatchface.databinding.ActivityMainBinding
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
-import com.shishkin.luxuriouswatchface.viewmodels.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 //    lateinit var binding: ActivityMainBinding
 
-    val viewModel: MainActivityViewModel by viewModels()
-    var settingsEditor = SettingsEditor(this)
+    @Inject
+    lateinit var settingsEditor: SettingsEditor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        settingsEditor.initSession(this)
 
         ActivityMainBinding.inflate(layoutInflater)
             .apply {

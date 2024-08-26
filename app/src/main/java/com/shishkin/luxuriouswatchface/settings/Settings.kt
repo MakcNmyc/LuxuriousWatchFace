@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
@@ -15,7 +14,6 @@ import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.util.createBinding
 import com.shishkin.luxuriouswatchface.util.setUpBaseList
 import com.shishkin.luxuriouswatchface.util.toVisibility
-import com.shishkin.luxuriouswatchface.viewmodels.MainActivityViewModel
 import com.shishkin.luxuriouswatchface.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -30,7 +28,7 @@ class Settings : Fragment() {
 //    private val settingsArgs: SettingsArgs by navArgs()
     @Inject lateinit var adapter: SettingsAdapter
     private val viewModel: SettingsViewModel by viewModels()
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
+//    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var settingsEditor: SettingsEditor
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,7 +154,7 @@ class Settings : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("settingsIdFlow", "onViewCreated viewModel.recyclerViewState = ${activityViewModel.recyclerViewState}")
+//        Log.e("settingsIdFlow", "onViewCreated viewModel.recyclerViewState = ${activityViewModel.recyclerViewState}")
 //        activityViewModel.recyclerViewState?.let {
 //            Log.e("settingsIdFlow", "onRestoreInstanceState")
 //            binding?.settingsList.layoutManager?.onRestoreInstanceState(it)
@@ -166,7 +164,7 @@ class Settings : Fragment() {
 
     override fun onResume() {
         Log.e("settingsIdFlow", "onResume")
-        Log.e("settingsIdFlow", "viewModel.recyclerViewState = ${activityViewModel.recyclerViewState}")
+//        Log.e("settingsIdFlow", "viewModel.recyclerViewState = ${activityViewModel.recyclerViewState}")
 //        activityViewModel.recyclerViewState?.let {
 //            Log.e("settingsIdFlow", "onRestoreInstanceState")
 //            binding.settingsList.layoutManager?.onRestoreInstanceState(it)

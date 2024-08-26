@@ -8,40 +8,41 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingsEditor(
-    activity: AppCompatActivity
+class SettingsEditor @Inject constructor(
+    private val schema: SettingsSchema
 ) {
 
     private lateinit var editorSession: EditorSession
 
-    private val _settingsHolder = MutableStateFlow(HashMap<String, Any>())
+    private val _settingsHolder = MutableStateFlow<UserSettings?>(null)
     val settingsHolder = _settingsHolder.asStateFlow()
 
     private val _state = MutableStateFlow(State.Loading)
     val state = _state.asStateFlow()
 
-    init {
+    fun initSession(activity: AppCompatActivity){
         activity.lifecycleScope.launch{
             editorSession = EditorSession.createOnWatchEditorSession(
                 activity = activity
             )
 
-            editorSession.userStyle.collectLatest{
+            editorSession.userStyle.collectLatest{ userStyle ->
                 _state.value = State.Loading
 
-                val settings = HashMap<String, Any>()
-                for(setting in it){
-                    settings[setting.key.id.value] = fromOption(setting.value)
-                }
-                _settingsHolder.value = settings
+                _settingsHolder.value = userStyle.toUserSettings()
 
                 _state.value = State.Ready
             }
         }
     }
 
-    operator fun get(id: String) = editorSession.userStyleSchema[UserStyleSetting.Id(id)]!!
+//    operator fun get(id: String) = _settingsHolder.value[id]!!
+
+//    fun settingsDescription() : UserStyleSettingDescription<*>{
+//
+//    }
 
 //    fun getValue(id: String){
 //        editorSession.userStyle.collect{}
@@ -54,26 +55,39 @@ class SettingsEditor(
 
     fun set(id: String, userStyleOption: UserStyleSetting.Option){
         val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
-        mutableUserStyle[this[id]] = userStyleOption
+        mutableUserStyle[editorSession.userStyleSchema[UserStyleSetting.Id(id)]!!] = userStyleOption
         editorSession.userStyle.value = mutableUserStyle.toUserStyle()
     }
 
-    fun <V> set(id: String, value: V){
-        set(id, toOption(value))
+    fun <V : Any> set(id: String, value: V){
+        set(id, value.toOption())
     }
 
-    private fun <V> toOption(value: V) : UserStyleSetting.Option =
-        when (value) {
-            is Int -> UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption(value.toLong())
-            is Long -> UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption(value)
+    private fun <V : Any> V.toOption() : UserStyleSetting.Option =
+        when (this) {
+            is Int -> UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption(this.toLong())
+            is Long -> UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption(this)
             else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toOption type")
         }
 
-    private fun <V> fromOption(option: V) =
-        when (option) {
-            is UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption -> (option.value)
-            else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toOption type")
-        }
+
+
+//    private fun UserStyleSetting.Option.fromOption(description: UserStyleSettingDescription<*>) : Any =
+//        when(this){
+//            is UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption ->
+//                when (description.property.javaClass) {
+//                    Int::class.java -> value.toInt()
+//                    Long::class.java -> value
+//                    else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toSettingsValue LongRangeOption type")
+//                }
+//            else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toSettingsValue type")
+//        }
+
+//    private fun <V> fromOption(option: V) =
+//        when (option) {
+//            is UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption -> (option.value)
+//            else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toOption type")
+//        }
 
 //    private fun <V> toOption(setting: UserStyleSetting.Option) : V =
 //        when (setting) {

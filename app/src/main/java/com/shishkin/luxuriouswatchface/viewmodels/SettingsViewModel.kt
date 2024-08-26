@@ -10,7 +10,6 @@ import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
 import com.shishkin.luxuriouswatchface.models.SettingsData
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsRepository
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchemaImp
 import com.shishkin.luxuriouswatchface.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -61,7 +60,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
         if(_settingsData.value == null)
             viewModelScope.launch {
                 settingsEditor.settingsHolder.collectLatest{
-                    Log.e("colorsPick", "collectLatest settingsHolder color is ${settingsEditor.settingsHolder.value[SettingsSchemaImp.BACKGROUND_COLOR]}")
+//                    Log.e("colorsPick", "collectLatest settingsHolder color is ${settingsEditor.settingsHolder.value[SettingsSchemaImp.BACKGROUND_COLOR]}")
                     _settingsData.value = createSettingsData(context, settingsEditor)
                 }
             }

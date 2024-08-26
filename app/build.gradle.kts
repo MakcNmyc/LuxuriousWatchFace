@@ -70,4 +70,6 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.42")
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-compiler:2.44")
+
+    implementation(kotlin("reflect"))
 }

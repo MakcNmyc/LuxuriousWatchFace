@@ -5,15 +5,19 @@ import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
+import kotlin.reflect.KClass
+import kotlin.reflect.KProperty1
 
-class UserStyleSettingFabric<V>(
+class UserStyleSettingDescription<V>(
 //    private val editorSession: EditorSession,
     val id: UserStyleSetting.Id,
-    val descriptionProducer: () -> UserStyleSettingDescription<V>,
+    val property: KProperty1<UserSettings, V>,
+    val descriptionProducer: () -> AdditionalDescription<in V>,
 ) {
 
-    data class UserStyleSettingDescription<V>(
-        val settingClass: Class<V>,
+
+
+    data class AdditionalDescription<V>(
         @StringRes val displayNameResourceId: Int,
         @StringRes val descriptionResourceId: Int,
         val icon: Icon? = null,
@@ -25,8 +29,8 @@ class UserStyleSettingFabric<V>(
 
     fun create(resources: Resources): UserStyleSetting =
         descriptionProducer().run {
-            when (settingClass) {
-                Int::class.java -> UserStyleSetting.LongRangeUserStyleSetting(
+            when (property.returnType.classifier as KClass<*>) {
+                Int::class -> UserStyleSetting.LongRangeUserStyleSetting(
                     id,
                     resources,
                     displayNameResourceId,
@@ -39,9 +43,10 @@ class UserStyleSettingFabric<V>(
                     null
                 )
 
-                else -> throw IllegalArgumentException("Unsupported ${javaClass.name} create type")
+                else -> throw IllegalArgumentException("Unsupported ${javaClass.name} create type ${property.returnType.classifier as KClass<*>}")
             }
         }
+
 
 //    fun get() = editorSession.userStyleSchema[id]!!
 //

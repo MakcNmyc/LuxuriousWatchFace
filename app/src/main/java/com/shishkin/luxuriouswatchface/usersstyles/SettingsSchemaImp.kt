@@ -8,19 +8,29 @@ import javax.inject.Inject
 
 class SettingsSchemaImp @Inject constructor() : SettingsSchema{
 
+    private val allSettings = HashMap<String, UserStyleSettingDescription<*>>()
+
 //    private var editorSession: EditorSession? = null
 
 //    var backgroundColor: UserStyleSetting.LongRangeUserStyleSetting? = editorSession.userStyleSchema[BACKGROUND_COLOR] as UserStyleSetting.LongRangeUserStyleSetting
 
-    private val backgroundColor = UserStyleSettingFabric(
-        UserStyleSetting.Id(BACKGROUND_COLOR)
+    private val backgroundColor = UserStyleSettingDescription(
+        UserStyleSetting.Id(UserSettings.BACKGROUND_COLOR),
+        UserSettings::backGroundColor
     ) {
-        UserStyleSettingFabric.UserStyleSettingDescription(
-            Int::class.java,
+        UserStyleSettingDescription.AdditionalDescription(
             R.string.setting_background_color_name,
             R.string.setting_background_color_description
         )
     }
+
+    init{
+        allSettings[backgroundColor.id.value] = backgroundColor
+    }
+
+    override fun get(id: String)  : UserStyleSettingDescription<*> =
+        allSettings[id] ?: throw IllegalArgumentException("Unsupported settings'$id' for current schema")
+
 
 //    private fun <V> createSetting(
 //        id: String,
@@ -41,9 +51,9 @@ class SettingsSchemaImp @Inject constructor() : SettingsSchema{
 
     override fun createUserStyleSchema(resources: Resources) =
         UserStyleSchema(
-            listOf(
-                backgroundColor.create(resources),
-                )
+            allSettings.map {
+                it.value.create(resources)
+            }.toList()
         )
 
 //    fun initEditorSession(activity: AppCompatActivity){
@@ -81,8 +91,6 @@ class SettingsSchemaImp @Inject constructor() : SettingsSchema{
 //        editorSession.userStyle.value = mutableUserStyle.toUserStyle()
 //    }
 
-    companion object{
-        const val BACKGROUND_COLOR = "background_color"
-    }
+
 
 }
