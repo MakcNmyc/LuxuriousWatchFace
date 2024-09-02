@@ -36,7 +36,7 @@ class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsE
 
 //            owner.setFragmentResult(Settings.SETTINGS_CHANGE, bundleOf(Settings.SETTINGS_CHANGE to ))
 
-            settingsEditor.set(UserSettings.BACKGROUND_COLOR, model.color)
+            settingsEditor.set(UserSettings::backGroundColor, model.color)
 
             Navigation.findNavController(binding.root).navigateUp()
 //            Navigation.findNavController(binding.root).navigate(

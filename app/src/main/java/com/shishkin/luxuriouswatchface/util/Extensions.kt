@@ -13,9 +13,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.WearableRecyclerView
+import com.shishkin.luxuriouswatchface.usersstyles.UserSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
+import kotlin.reflect.KProperty1
 
 inline fun <T : ViewDataBinding> Fragment.createBinding(
     inflater: LayoutInflater,
@@ -36,7 +39,7 @@ fun <T : Any> Fragment.setUpBaseList(
         setHasFixedSize(true)
         this.layoutManager = layoutManager
         this.adapter = adapter
-        isEdgeItemsCenteringEnabled = true
+//        isEdgeItemsCenteringEnabled = true
         isCircularScrollingGestureEnabled = false
     }
 }
@@ -63,10 +66,15 @@ fun Boolean.toVisibility() =
 
 fun <V : Any> List<V>.toPagingData() = PagingData.from(this)
 
+@Suppress("UNCHECKED_CAST")
+fun <V : Any> KProperty1<*, V>.typeFromClassifier() : KClass<V> =
+    returnType.classifier as KClass<V>
+
+fun KProperty1<UserSettings, *>.toId() = name
+
 inline fun <reified T : Enum<T>> Int.toEnum(): T? =
     if(this < 0) null
         else enumValues<T>().firstOrNull { it.ordinal == this }
-
 
 inline fun <reified T : Enum<T>> T.toInt(): Int =
     this.ordinal

@@ -2,15 +2,13 @@ package com.shishkin.luxuriouswatchface.usersstyles
 
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
-import kotlin.reflect.KClass
+import com.shishkin.luxuriouswatchface.util.toId
+import com.shishkin.luxuriouswatchface.util.typeFromClassifier
+import kotlin.reflect.KProperty1
 
 data class UserSettings (
     val backGroundColor: Int,
-){
-    companion object{
-        const val BACKGROUND_COLOR = "background_color"
-    }
-}
+)
 
 fun UserStyle.toUserSettings() : UserSettings{
 
@@ -20,9 +18,12 @@ fun UserStyle.toUserSettings() : UserSettings{
     }
 
     return UserSettings (
-        settingsMap[UserSettings.BACKGROUND_COLOR]!!.fromOption(Int::class),
+        backGroundColor = UserSettings::backGroundColor.optionValue(settingsMap),
     )
 }
+
+private fun <V : Any> KProperty1<UserSettings, V>.optionValue(valuesMap: Map<String, UserStyleSetting.Option>) =
+    valuesMap[this.toId()]!!.fromOption(this)
 
 //private fun <V : Any> propertyValue(property: KProperty1<UserSettings, V>, optionsMap: HashMap<String, UserStyleSetting.Option>){
 //        optionsMap[property.name]!!.fromOption(property.returnType.classifier as KClass<*>)
@@ -32,10 +33,10 @@ fun UserStyle.toUserSettings() : UserSettings{
 //    this[editorSession.userStyleSchema[UserStyleSetting.Id(id)]]!!.fromOption(type)
 
 @Suppress("UNCHECKED_CAST")
-private fun <V : Any> UserStyleSetting.Option.fromOption(to: KClass<V>): V =
+private fun <V : Any> UserStyleSetting.Option.fromOption(toProperty: KProperty1<UserSettings, V>): V =
     when (this) {
         is UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption ->
-            when (to) {
+            when (toProperty.typeFromClassifier()) {
                 Int::class -> value.toInt() as V
                 Long::class -> value as V
                 else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toSettingsValue LongRangeOption type")

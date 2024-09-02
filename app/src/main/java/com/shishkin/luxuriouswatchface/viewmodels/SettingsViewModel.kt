@@ -10,6 +10,7 @@ import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
 import com.shishkin.luxuriouswatchface.models.SettingsData
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsRepository
+import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchema
 import com.shishkin.luxuriouswatchface.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,6 +27,9 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
+
+    @Inject
+    lateinit var schema: SettingsSchema
 
     private val title = SettingsData(
         TITLE_ID,
@@ -68,7 +72,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
 
     private fun createSettingsData(context: Context, settingsEditor: SettingsEditor) =
         arrayListOf(title).apply {
-            addAll(settingsRepository.getSettingsData(context, settingsEditor))
+            addAll(settingsRepository.getSettingsData(context, settingsEditor, schema))
         }.toPagingData()
 
 //        pagedList = createSettingsList(context, settingsEditor).asPagedList{ dataSource ->

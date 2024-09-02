@@ -1,36 +1,25 @@
 package com.shishkin.luxuriouswatchface.usersstyles
 
-import android.content.res.Resources
-import androidx.wear.watchface.style.UserStyleSchema
-import androidx.wear.watchface.style.UserStyleSetting
-import com.shishkin.luxuriouswatchface.R
-import javax.inject.Inject
+//class SettingsSchemaImp @Inject constructor() {
 
-class SettingsSchemaImp @Inject constructor() : SettingsSchema{
-
-    private val allSettings = HashMap<String, UserStyleSettingDescription<*>>()
+//    private val allSettings = HashMap<String, UserStyleSettingDescription<*>>()
 
 //    private var editorSession: EditorSession? = null
 
 //    var backgroundColor: UserStyleSetting.LongRangeUserStyleSetting? = editorSession.userStyleSchema[BACKGROUND_COLOR] as UserStyleSetting.LongRangeUserStyleSetting
 
-    private val backgroundColor = UserStyleSettingDescription(
-        UserStyleSetting.Id(UserSettings.BACKGROUND_COLOR),
-        UserSettings::backGroundColor
-    ) {
-        UserStyleSettingDescription.AdditionalDescription(
-            R.string.setting_background_color_name,
-            R.string.setting_background_color_description
-        )
-    }
+//    private val backgroundColor = UserStyleSettingDescription(
+//        UserSettings::backGroundColor
+//    ) {
+//        UserStyleSettingDescription.AdditionalDescription(
+//            R.string.setting_background_color_name,
+//            R.string.setting_background_color_description
+//        )
+//    }
 
-    init{
-        allSettings[backgroundColor.id.value] = backgroundColor
-    }
-
-    override fun get(id: String)  : UserStyleSettingDescription<*> =
-        allSettings[id] ?: throw IllegalArgumentException("Unsupported settings'$id' for current schema")
-
+//    init{
+//        allSettings[backgroundColor.id.value] = backgroundColor
+//    }
 
 //    private fun <V> createSetting(
 //        id: String,
@@ -49,12 +38,10 @@ class SettingsSchemaImp @Inject constructor() : SettingsSchema{
 //        }
 //    }
 
-    override fun createUserStyleSchema(resources: Resources) =
-        UserStyleSchema(
-            allSettings.map {
-                it.value.create(resources)
-            }.toList()
-        )
+//    fun createUserStyleSchema(resources: Resources) =
+//        UserStyleSchema(
+//            listOf(backgroundColor.create(resources))
+//        )
 
 //    fun initEditorSession(activity: AppCompatActivity){
 //        activity.lifecycleScope.launch{
@@ -93,4 +80,4 @@ class SettingsSchemaImp @Inject constructor() : SettingsSchema{
 
 
 
-}
+//}

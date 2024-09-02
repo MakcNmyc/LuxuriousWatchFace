@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.watchface.editor.EditorSession
 import androidx.wear.watchface.style.UserStyleSetting
+import com.shishkin.luxuriouswatchface.util.toId
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.reflect.KProperty1
 
-class SettingsEditor @Inject constructor(
-    private val schema: SettingsSchema
-) {
+class SettingsEditor @Inject constructor() {
 
     private lateinit var editorSession: EditorSession
 
@@ -38,29 +38,14 @@ class SettingsEditor @Inject constructor(
         }
     }
 
-//    operator fun get(id: String) = _settingsHolder.value[id]!!
-
-//    fun settingsDescription() : UserStyleSettingDescription<*>{
-//
-//    }
-
-//    fun getValue(id: String){
-//        editorSession.userStyle.collect{}
-//
-//        when (val setting = get(id)[id]) {
-//            is UserStyleSetting.LongRangeUserStyleSetting -> setting[id]
-//            else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toOption type")
-//        }
-//    }
-
-    fun set(id: String, userStyleOption: UserStyleSetting.Option){
+    private fun set(id: String, userStyleOption: UserStyleSetting.Option){
         val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
         mutableUserStyle[editorSession.userStyleSchema[UserStyleSetting.Id(id)]!!] = userStyleOption
         editorSession.userStyle.value = mutableUserStyle.toUserStyle()
     }
 
-    fun <V : Any> set(id: String, value: V){
-        set(id, value.toOption())
+    fun <V : Any> set(property: KProperty1<UserSettings, V>, value: V){
+        set(property.toId(), value.toOption())
     }
 
     private fun <V : Any> V.toOption() : UserStyleSetting.Option =

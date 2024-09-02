@@ -5,48 +5,39 @@ import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
+import com.shishkin.luxuriouswatchface.util.typeFromClassifier
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
-class UserStyleSettingDescription<V>(
+class UserStyleSettingDescription<V : Any>(
 //    private val editorSession: EditorSession,
-    val id: UserStyleSetting.Id,
-    val property: KProperty1<UserSettings, V>,
-    val descriptionProducer: () -> AdditionalDescription<in V>,
+    private val property: KProperty1<UserSettings, V>,
+    @StringRes val displayNameResourceId: Int,
+    @StringRes private val descriptionResourceId: Int,
+    private val icon: Icon? = null,
+    private val minimumValue: Long = Int.MIN_VALUE.toLong(),
+    private val maximumValue: Long = Int.MAX_VALUE.toLong(),
+    private val affectsWatchFaceLayers: Collection<WatchFaceLayer> = listOf(WatchFaceLayer.BASE),
+    private val defaultValue: V? = null,
 ) {
 
-
-
-    data class AdditionalDescription<V>(
-        @StringRes val displayNameResourceId: Int,
-        @StringRes val descriptionResourceId: Int,
-        val icon: Icon? = null,
-        val minimumValue: Long = Int.MIN_VALUE.toLong(),
-        val maximumValue: Long = Int.MAX_VALUE.toLong(),
-        val affectsWatchFaceLayers: Collection<WatchFaceLayer> = listOf(WatchFaceLayer.BASE),
-        val defaultValue: V? = null,
-    )
-
     fun create(resources: Resources): UserStyleSetting =
-        descriptionProducer().run {
-            when (property.returnType.classifier as KClass<*>) {
-                Int::class -> UserStyleSetting.LongRangeUserStyleSetting(
-                    id,
-                    resources,
-                    displayNameResourceId,
-                    descriptionResourceId,
-                    null,
-                    minimumValue,
-                    maximumValue,
-                    affectsWatchFaceLayers,
-                    (defaultValue ?: 0L) as Long,
-                    null
-                )
+        when (property.typeFromClassifier()) {
+            Int::class -> UserStyleSetting.LongRangeUserStyleSetting(
+                UserStyleSetting.Id(property.name),
+                resources,
+                displayNameResourceId,
+                descriptionResourceId,
+                icon,
+                minimumValue,
+                maximumValue,
+                affectsWatchFaceLayers,
+                (defaultValue ?: 0L) as Long,
+                null
+            )
 
-                else -> throw IllegalArgumentException("Unsupported ${javaClass.name} create type ${property.returnType.classifier as KClass<*>}")
-            }
+            else -> throw IllegalArgumentException("Unsupported ${javaClass.name} create type ${property.returnType.classifier as KClass<*>}")
         }
-
 
 //    fun get() = editorSession.userStyleSchema[id]!!
 //
