@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class Settings : Fragment() {
+class SettingsFragment : Fragment() {
 
 //    private var binding: SettingsListBinding? = null
 //    private val settingsArgs: SettingsArgs by navArgs()

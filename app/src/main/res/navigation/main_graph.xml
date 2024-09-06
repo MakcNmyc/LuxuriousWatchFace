@@ -2,15 +2,15 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/settings">
+    app:startDestination="@id/settingsFragment">
 
     <fragment
-        android:id="@+id/settings"
-        android:name="com.shishkin.luxuriouswatchface.settings.Settings"
-        android:label="Settings2" >
+        android:id="@+id/settingsFragment"
+        android:name="com.shishkin.luxuriouswatchface.settings.SettingsFragment"
+        android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settings_to_colorsPicker"
-            app:destination="@id/colorsPicker" />
+            app:destination="@id/colorsPickerFragment" />
         <argument
             android:name="settingsChanges"
             app:argType="com.shishkin.luxuriouswatchface.models.SettingsChanges"
@@ -18,14 +18,14 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
-        android:id="@+id/colorsPicker"
-        android:name="com.shishkin.luxuriouswatchface.settings.ColorsPicker"
-        android:label="ColorsPicker" >
+        android:id="@+id/colorsPickerFragment"
+        android:name="com.shishkin.luxuriouswatchface.settings.ColorsPickerFragment"
+        android:label="ColorsPickerFragment" >
         <argument
             android:name="settingsId"
             app:argType="string" />
         <action
             android:id="@+id/action_colorsPicker_to_settings"
-            app:destination="@id/settings" />
+            app:destination="@id/settingsFragment" />
     </fragment>
 </navigation>

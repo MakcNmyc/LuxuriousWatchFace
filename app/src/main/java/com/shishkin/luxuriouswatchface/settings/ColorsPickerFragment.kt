@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ColorsPicker : Fragment() {
+class ColorsPickerFragment : Fragment() {
 
     @Inject
     lateinit var adapter: ColorsPickerAdapter
