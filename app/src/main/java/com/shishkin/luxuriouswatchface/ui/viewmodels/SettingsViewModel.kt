@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.viewmodels
+package com.shishkin.luxuriouswatchface.ui.viewmodels
 
 import android.content.Context
 import android.util.Log

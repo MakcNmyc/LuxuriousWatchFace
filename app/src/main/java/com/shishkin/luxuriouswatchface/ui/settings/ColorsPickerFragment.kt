@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.settings
+package com.shishkin.luxuriouswatchface.ui.settings
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,7 @@ import com.shishkin.luxuriouswatchface.adapters.ColorsPickerAdapter
 import com.shishkin.luxuriouswatchface.databinding.ColorsListBinding
 import com.shishkin.luxuriouswatchface.util.createBinding
 import com.shishkin.luxuriouswatchface.util.setUpBaseList
-import com.shishkin.luxuriouswatchface.viewmodels.ColorsPickerViewModel
+import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorsPickerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

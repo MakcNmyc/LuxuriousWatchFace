@@ -4,7 +4,7 @@
  * changes to the libraries and their usages.
  */
 
-package com.shishkin.luxuriouswatchface.settings
+package com.shishkin.luxuriouswatchface.ui.settings
 
 import android.os.Bundle
 import android.util.Log

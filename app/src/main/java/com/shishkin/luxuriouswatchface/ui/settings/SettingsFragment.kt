@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.settings
+package com.shishkin.luxuriouswatchface.ui.settings
 
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +14,7 @@ import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.util.createBinding
 import com.shishkin.luxuriouswatchface.util.setUpBaseList
 import com.shishkin.luxuriouswatchface.util.toVisibility
-import com.shishkin.luxuriouswatchface.viewmodels.SettingsViewModel
+import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -14,7 +14,7 @@ import com.shishkin.luxuriouswatchface.models.SettingsData
 import com.shishkin.luxuriouswatchface.models.toSettingsEditText
 import com.shishkin.luxuriouswatchface.models.toSettingsTextWithImage
 import com.shishkin.luxuriouswatchface.models.toSettingsTitle
-import com.shishkin.luxuriouswatchface.settings.SettingsFragmentDirections
+import com.shishkin.luxuriouswatchface.ui.settings.SettingsFragmentDirections
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.util.StabilizingWorker
 import kotlinx.coroutines.CoroutineScope

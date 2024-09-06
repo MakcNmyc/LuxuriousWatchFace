@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.shishkin.luxuriouswatchface.settings.SettingsFragment"
+        android:name="com.shishkin.luxuriouswatchface.ui.settings.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settings_to_colorsPicker"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/colorsPickerFragment"
-        android:name="com.shishkin.luxuriouswatchface.settings.ColorsPickerFragment"
+        android:name="com.shishkin.luxuriouswatchface.ui.settings.ColorsPickerFragment"
         android:label="ColorsPickerFragment" >
         <argument
             android:name="settingsId"
