@@ -10,4 +10,16 @@
 
     <string name="setting_background_color_name">Background color</string>
     <string name="setting_background_color_description">Background color for watch</string>
+
+    <string name="setting_accessories_color_name">Accessories color</string>
+    <string name="setting_accessories_color_description">Color for additional accessories on watch face</string>
+
+    <string name="setting_top_text_name">Top text</string>
+    <string name="setting_top_text_description">Text above the center of the watch face</string>
+
+    <string name="setting_bottom_text_name">Bottom text</string>
+    <string name="setting_bottom_text_description">Text below the center of the watch face</string>
+
+    <string name="setting_custom_data_name">Custom data</string>
+    <string name="setting_custom_data_description">Additional data for application customisation</string>
 </resources>

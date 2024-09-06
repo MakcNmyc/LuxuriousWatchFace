@@ -1,6 +1,7 @@
 package com.shishkin.luxuriouswatchface.usersstyles
 
 import android.content.Context
+import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
 import com.shishkin.luxuriouswatchface.models.SettingsData
 import com.shishkin.luxuriouswatchface.util.toId
@@ -43,22 +44,23 @@ class SettingsRepository @Inject constructor() {
                     clickListenerType = SettingsAdapter.ClickListenerTypes.ColorPickListener.toInt()
                 ),
                 SettingsData(
-                    id = "1",
-                    type = SettingsAdapter.EDIT_TEXT,
-                    title = "1",
-                    text = "ewq",
+                    id = UserSettings::accessoriesColor.toId(),
+                    type = SettingsAdapter.TEXT_WITH_IMAGE,
+                    title = context.resources.getString(schema.accessoriesColor.displayNameResourceId),
+                    colorImage = settings.accessoriesColor,
+                    clickListenerType = SettingsAdapter.ClickListenerTypes.ColorPickListener.toInt()
                 ),
                 SettingsData(
-                    id = "2",
+                    id = CustomData::topText.toId(),
                     type = SettingsAdapter.EDIT_TEXT,
-                    title = "2",
-                    text = "ewq",
+                    title = context.resources.getString(R.string.setting_top_text_name),
+                    text = settings.customData.topText,
                 ),
                 SettingsData(
-                    id = "3",
+                    id =  CustomData::bottomText.toId(),
                     type = SettingsAdapter.EDIT_TEXT,
-                    title = "3",
-                    text = "ewq",
+                    title = context.resources.getString(R.string.setting_bottom_text_name),
+                    text = settings.customData.bottomText,
                 ),
                 SettingsData(
                     id = "4",

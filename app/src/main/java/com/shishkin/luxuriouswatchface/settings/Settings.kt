@@ -138,6 +138,8 @@ class Settings : Fragment() {
 
                 viewModel.initSettingsData(requireContext(), settingsEditor)
 
+                adapter.settingsEditor = settingsEditor
+                adapter.scope = viewLifecycleOwner.lifecycleScope
                 setUpBaseList(
                     binding.settingsList,
                     viewModel.settingsData,

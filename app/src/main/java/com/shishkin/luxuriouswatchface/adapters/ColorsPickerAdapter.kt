@@ -6,7 +6,6 @@ import androidx.navigation.Navigation
 import com.shishkin.luxuriouswatchface.databinding.ColorsElementBinding
 import com.shishkin.luxuriouswatchface.models.ColorsElement
 import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
-import com.shishkin.luxuriouswatchface.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.util.ColorImageCreator
 import com.shishkin.luxuriouswatchface.viewmodels.SettingsViewModel
 import javax.inject.Inject
@@ -36,7 +35,7 @@ class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsE
 
 //            owner.setFragmentResult(Settings.SETTINGS_CHANGE, bundleOf(Settings.SETTINGS_CHANGE to ))
 
-            settingsEditor.set(UserSettings::backGroundColor, model.color)
+            settingsEditor.set(settingsId, model.color)
 
             Navigation.findNavController(binding.root).navigateUp()
 //            Navigation.findNavController(binding.root).navigate(

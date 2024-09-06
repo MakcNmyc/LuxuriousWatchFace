@@ -6,12 +6,14 @@ import androidx.annotation.StringRes
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
 import com.shishkin.luxuriouswatchface.util.typeFromClassifier
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
 class UserStyleSettingDescription<V : Any>(
 //    private val editorSession: EditorSession,
-    private val property: KProperty1<UserSettings, V>,
+    val property: KProperty1<UserSettings, V>,
     @StringRes val displayNameResourceId: Int,
     @StringRes private val descriptionResourceId: Int,
     private val icon: Icon? = null,
@@ -34,6 +36,10 @@ class UserStyleSettingDescription<V : Any>(
                 affectsWatchFaceLayers,
                 (defaultValue ?: 0L) as Long,
                 null
+            )
+            CustomData::class -> UserStyleSetting.CustomValueUserStyleSetting(
+                listOf(WatchFaceLayer.BASE),
+                Json.encodeToString(CustomData()).toByteArray()
             )
 
             else -> throw IllegalArgumentException("Unsupported ${javaClass.name} create type ${property.returnType.classifier as KClass<*>}")

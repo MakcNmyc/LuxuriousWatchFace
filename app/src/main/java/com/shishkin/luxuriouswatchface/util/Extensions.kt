@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
+import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty1
 
 inline fun <T : ViewDataBinding> Fragment.createBinding(
@@ -58,6 +59,15 @@ fun <T : Any> Fragment.setUpPagedList(
     }
 }
 
+fun KClass<*>.allProperties() : Collection<KProperty1<*, *>> = this.members.filterIsInstance<KProperty1<*, *>>()
+
+@Suppress("UNCHECKED_CAST")
+fun <T: Any, V> T.setProperty(propertyName: String, value: V) =
+    (this::class.members.first { it.name == propertyName } as KMutableProperty1<T, V>).set(this, value)
+
+fun <T> isEquals(collection: Collection<T>, collection2: Collection<T>) =
+    collection.size == collection2.size && collection.toSet() == collection2.toSet()
+
 fun Int.fromDimension(context: Context) =
     context.resources.getDimension(this)
 
@@ -70,7 +80,9 @@ fun <V : Any> List<V>.toPagingData() = PagingData.from(this)
 fun <V : Any> KProperty1<*, V>.typeFromClassifier() : KClass<V> =
     returnType.classifier as KClass<V>
 
-fun KProperty1<UserSettings, *>.toId() = name
+val CUSTOM_DATA_PROPERTY = UserSettings::customData
+fun KProperty1<*, *>.toId() =
+    if(this == CUSTOM_DATA_PROPERTY) "CustomValue" else name
 
 inline fun <reified T : Enum<T>> Int.toEnum(): T? =
     if(this < 0) null

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
 
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id ("org.jetbrains.kotlin.kapt")
@@ -49,6 +50,8 @@ android {
 
 dependencies {
 
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
     implementation("androidx.fragment:fragment-ktx:1.5.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 //    implementation("androidx.core:core-splashscreen:1.0.1")
@@ -72,4 +75,6 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.44")
 
     implementation(kotlin("reflect"))
+
+
 }

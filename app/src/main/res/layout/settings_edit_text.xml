@@ -29,7 +29,10 @@
             android:layout_height="wrap_content"
             android:hint="@string/settings_text_edit_hint"
             android:inputType="text"
-            android:text="@={model.text}"/>
+            android:text="@={model.text}"
+            android:maxLength="@integer/watchface_max_string_size"
+            android:imeOptions="actionDone"
+            />
 
     </LinearLayout>
 

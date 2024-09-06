@@ -64,7 +64,7 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
         if(_settingsData.value == null)
             viewModelScope.launch {
                 settingsEditor.settingsHolder.collectLatest{
-//                    Log.e("colorsPick", "collectLatest settingsHolder color is ${settingsEditor.settingsHolder.value[SettingsSchemaImp.BACKGROUND_COLOR]}")
+                    Log.e("customData", "collectLatest settingsHolder is ${it}")
                     _settingsData.value = createSettingsData(context, settingsEditor)
                 }
             }
@@ -75,7 +75,13 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
             addAll(settingsRepository.getSettingsData(context, settingsEditor, schema))
         }.toPagingData()
 
-//        pagedList = createSettingsList(context, settingsEditor).asPagedList{ dataSource ->
+    override fun onCleared() {
+        Log.e("settingsIdFlow", "SettingsViewModel onCleared")
+        super.onCleared()
+    }
+
+
+    //        pagedList = createSettingsList(context, settingsEditor).asPagedList{ dataSource ->
 //            viewModelScope.launch {
 //                settingsEditor.settingsHolder.collect{
 //                    dataSource.invalidate()
