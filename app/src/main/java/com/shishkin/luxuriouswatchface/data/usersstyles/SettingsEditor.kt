@@ -1,5 +1,6 @@
 package com.shishkin.luxuriouswatchface.data.usersstyles
 
+import android.util.ArraySet
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
@@ -23,8 +24,10 @@ class SettingsEditor @Inject constructor() {
     private val _settingsHolder = MutableStateFlow<UserSettings?>(null)
     val settingsHolder = _settingsHolder.asStateFlow()
 
-    private val _state = MutableStateFlow(State.Loading)
+    private val _state = MutableStateFlow(State.WAITING_INIT)
     val state = _state.asStateFlow()
+
+    private val delayedActions = ArraySet<()->Unit>()
 
     fun initSession(activity: ComponentActivity){
         if (editorSession != null) return
@@ -33,18 +36,29 @@ class SettingsEditor @Inject constructor() {
             EditorSession.createOnWatchEditorSession(
                 activity = activity
             ).also { editor ->
+
                 editorSession = editor
-                editor.userStyle.collectLatest{ userStyle ->
-                    _state.value = State.Loading
 
-                    _settingsHolder.value = userStyle.toUserSettings()
+                launch {
+                    editor.userStyle.collectLatest{ userStyle ->
+                        _state.value = State.LOADING
 
-                    _state.value = State.Ready
+                        _settingsHolder.value = userStyle.toUserSettings()
+
+                        _state.value = State.READY
+                    }
+                }
+
+                state.collectLatest { v ->
+                    if(isReady(v)) {
+                        for(action in delayedActions) action()
+                        delayedActions.clear()
+                    }
                 }
             }
         }.invokeOnCompletion {
             Log.e("SettingsEditor", "SettingsEditor invokeOnCompletion")
-            _state.value = State.Loading
+            _state.value = State.WAITING_INIT
             editorSession = null
         }
     }
@@ -55,23 +69,24 @@ class SettingsEditor @Inject constructor() {
 //    }
 
     fun <V : Any> set(id: String, value: V) {
-        if(!isReady(state.value)) return
-        value.toCustomData(id){settingsHolder.value!!.customData.copy()}?.let {
-            set(CUSTOM_DATA_ID, it.toOption())
-        } ?: set(id, value.toOption())
-
+        doWhenReady{
+            value.toCustomData(id){settingsHolder.value!!.customData.copy()}?.let {
+                set(CUSTOM_DATA_ID, it.toOption())
+            } ?: set(id, value.toOption())
+        }
 //            .also {
 //                Log.e("customData", "toCustomData id = $id value - $it")
 //                set(id, it.toOption()) }
     }
 
     private fun set(id: String, userStyleOption: UserStyleSetting.Option){
-        val editor = editorSession ?: return
-
-        val mutableUserStyle = editor.userStyle.value.toMutableUserStyle()
-        Log.e("customData", "editor set id - $id userStyleSchema - ${editor.userStyleSchema} userStyleOption - $userStyleOption")
-        mutableUserStyle[editor.userStyleSchema[UserStyleSetting.Id(id)]!!] = userStyleOption
-        editor.userStyle.value = mutableUserStyle.toUserStyle()
+        doWhenReady{
+            val editor = editorSession!!
+            val mutableUserStyle = editor.userStyle.value.toMutableUserStyle()
+            Log.e("customData", "editor set id - $id userStyleSchema - ${editor.userStyleSchema} userStyleOption - $userStyleOption")
+            mutableUserStyle[editor.userStyleSchema[UserStyleSetting.Id(id)]!!] = userStyleOption
+            editor.userStyle.value = mutableUserStyle.toUserStyle()
+        }
     }
 
     private fun <V : Any> V.toCustomData(propertyName: String, producer: () -> CustomData?) =
@@ -85,9 +100,10 @@ class SettingsEditor @Inject constructor() {
         }
 
     fun <V : Any> setSilently(id: String, value: V) {
-        if(!isReady(state.value)) return
-        (value.toCustomData(id){settingsHolder.value!!.customData})?.setProperty(id, value)
-        set(id, value)
+        doWhenReady{
+            (value.toCustomData(id){settingsHolder.value!!.customData})?.setProperty(id, value)
+            set(id, value)
+        }
     }
 
     private fun <V : Any> V.toOption() : UserStyleSetting.Option =
@@ -101,7 +117,19 @@ class SettingsEditor @Inject constructor() {
         }
 
     companion object{
-        fun isReady(state: State) = state == State.Ready
+        fun isReady(state: State) = state == State.READY
+    }
+
+    private inline fun doWhenReady(crossinline action: ()->Unit){
+        if(isReady(state.value)) {
+            action()
+        }else{
+            delayAction{action()}
+        }
+    }
+
+    private fun delayAction(action: ()->Unit){
+        delayedActions.add(action)
     }
 
 //    private fun UserStyleSetting.Option.fromOption(description: UserStyleSettingDescription<*>) : Any =
@@ -128,6 +156,6 @@ class SettingsEditor @Inject constructor() {
 //        }
 
     enum class State{
-        Loading, Ready
+        LOADING, READY, WAITING_INIT
     }
 }

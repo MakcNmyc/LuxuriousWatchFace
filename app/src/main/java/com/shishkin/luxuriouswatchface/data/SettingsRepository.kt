@@ -83,14 +83,14 @@ import javax.inject.Singleton
                     type = SettingsAdapter.TEXT_WITH_IMAGE,
                     title = context.resources.getString(schema.backgroundColor.displayNameResourceId),
                     colorImage = settings.backGroundColor,
-                    clickListenerType = SettingsAdapter.ClickListenerTypes.ColorPickListener.toInt()
+                    clickListenerType = SettingsAdapter.ClickListenerTypes.COLOR_PICK_LISTENER.toInt()
                 ),
                 SettingsData(
                     id = UserSettings::accessoriesColor.toId(),
                     type = SettingsAdapter.TEXT_WITH_IMAGE,
                     title = context.resources.getString(schema.accessoriesColor.displayNameResourceId),
                     colorImage = settings.accessoriesColor,
-                    clickListenerType = SettingsAdapter.ClickListenerTypes.ColorPickListener.toInt()
+                    clickListenerType = SettingsAdapter.ClickListenerTypes.COLOR_PICK_LISTENER.toInt()
                 ),
                 SettingsData(
                     id = CustomData::topText.toId(),

@@ -42,7 +42,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         const val EDIT_TEXT = 2
 
 //        const val ITEM_PADDING = 1
-        const val TEXT_SAVING_DELAY = 2000L
+        const val TEXT_SAVING_DELAY = 500L
     }
 
     override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<SettingsData, SettingsTextWithImageBinding> =
@@ -109,7 +109,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
 
         model.clickListenerType?.let { type ->
             when (type) {
-                ClickListenerTypes.ColorPickListener -> createColorPickerListener(model.id)
+                ClickListenerTypes.COLOR_PICK_LISTENER -> createColorPickerListener(model.id)
             }.let { listener ->
                 binding.root.setOnClickListener(listener)
             }
@@ -186,7 +186,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
     }
 
     enum class ClickListenerTypes{
-        ColorPickListener
+        COLOR_PICK_LISTENER
     }
 
 }
