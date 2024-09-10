@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.shishkin.luxuriouswatchface.databinding.ActivityMainBinding
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
+import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsEditor
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

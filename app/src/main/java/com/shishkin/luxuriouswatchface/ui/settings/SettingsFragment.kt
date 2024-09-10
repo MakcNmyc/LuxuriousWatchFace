@@ -9,14 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
+import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.databinding.SettingsListBinding
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
+import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import com.shishkin.luxuriouswatchface.util.createBinding
 import com.shishkin.luxuriouswatchface.util.setUpBaseList
 import com.shishkin.luxuriouswatchface.util.toVisibility
-import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,12 +28,11 @@ class SettingsFragment : Fragment() {
     @Inject lateinit var adapter: SettingsAdapter
     private val viewModel: SettingsViewModel by viewModels()
 //    private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var settingsEditor: SettingsEditor
 
     override fun onCreate(savedInstanceState: Bundle?) {
 //
-        settingsEditor = (requireActivity() as MainActivity).settingsEditor
-//
+        viewModel.initSettingsSession(requireActivity())
+
 //        viewModel.createPagedData(requireContext(), settingsEditor)
 //
 //        super.onCreate(savedInstanceState)
@@ -105,11 +103,15 @@ class SettingsFragment : Fragment() {
                 Log.e("settingsIdFlow", "createBinding")
 //                this.binding = binding
 
+
                 viewLifecycleOwner.lifecycleScope.launch {
-                    settingsEditor.state.collectLatest { state ->
+                    viewModel.subscribeToSettingsState { state ->
                         Log.e("settingsIdFlow", "settingsEditor state is ${state}")
-                        (state == SettingsEditor.State.Ready).let { isReady ->
-                            Log.e("settingsIdFlow", "settingsEditor visibility is ${isReady.toVisibility()}")
+                        (SettingsEditor.isReady(state)).let { isReady ->
+                            Log.e(
+                                "settingsIdFlow",
+                                "settingsEditor visibility is ${isReady.toVisibility()}"
+                            )
                             binding.settingsList.visibility = isReady.toVisibility()
                             binding.progressBar.visibility = (!isReady).toVisibility()
                         }
@@ -136,9 +138,9 @@ class SettingsFragment : Fragment() {
 //                }
 
 
-                viewModel.initSettingsData(requireContext(), settingsEditor)
+//                viewModel.initSettingsData(requireContext(), viewModel.settingsEditor)
 
-                adapter.settingsEditor = settingsEditor
+                adapter.viewModel = viewModel
                 adapter.scope = viewLifecycleOwner.lifecycleScope
                 setUpBaseList(
                     binding.settingsList,

@@ -1,11 +1,13 @@
-package com.shishkin.luxuriouswatchface.usersstyles
+package com.shishkin.luxuriouswatchface.data.usersstyles
 
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.watchface.editor.EditorSession
 import androidx.wear.watchface.style.UserStyleSetting
-import com.shishkin.luxuriouswatchface.util.toId
+import com.shishkin.luxuriouswatchface.util.CUSTOM_DATA_ID
+import com.shishkin.luxuriouswatchface.util.findMember
+import com.shishkin.luxuriouswatchface.util.setProperty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 class SettingsEditor @Inject constructor() {
 
-    private lateinit var editorSession: EditorSession
+    private var editorSession: EditorSession? = null
 
     private val _settingsHolder = MutableStateFlow<UserSettings?>(null)
     val settingsHolder = _settingsHolder.asStateFlow()
@@ -24,39 +26,68 @@ class SettingsEditor @Inject constructor() {
     private val _state = MutableStateFlow(State.Loading)
     val state = _state.asStateFlow()
 
-    fun initSession(activity: AppCompatActivity){
+    fun initSession(activity: ComponentActivity){
+        if (editorSession != null) return
+
         activity.lifecycleScope.launch{
-            editorSession = EditorSession.createOnWatchEditorSession(
+            EditorSession.createOnWatchEditorSession(
                 activity = activity
-            )
+            ).also { editor ->
+                editorSession = editor
+                editor.userStyle.collectLatest{ userStyle ->
+                    _state.value = State.Loading
 
-            editorSession.userStyle.collectLatest{ userStyle ->
-                _state.value = State.Loading
+                    _settingsHolder.value = userStyle.toUserSettings()
 
-                _settingsHolder.value = userStyle.toUserSettings()
-
-                _state.value = State.Ready
+                    _state.value = State.Ready
+                }
             }
+        }.invokeOnCompletion {
+            Log.e("SettingsEditor", "SettingsEditor invokeOnCompletion")
+            _state.value = State.Loading
+            editorSession = null
         }
     }
 
-    private fun set(id: String, userStyleOption: UserStyleSetting.Option){
-        val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
-        Log.e("customData", "editor set id - $id userStyleSchema - ${editorSession.userStyleSchema} userStyleOption - $userStyleOption")
-        mutableUserStyle[editorSession.userStyleSchema[UserStyleSetting.Id(id)]!!] = userStyleOption
-        editorSession.userStyle.value = mutableUserStyle.toUserStyle()
-    }
 
 //    fun <V : Any> set(property: KProperty1<UserSettings, V>, value: V){
 //        set(property.toId(), value.toOption())
 //    }
 
     fun <V : Any> set(id: String, value: V) {
-        if (value is String) {
-            val s = settingsHolder.value ?: return
-            val c: CustomData = CustomData(id, value, s.customData)
-            set(UserSettings::customData.toId(), c.toOption())
-        } else set(id, value.toOption())
+        if(!isReady(state.value)) return
+        value.toCustomData(id){settingsHolder.value!!.customData.copy()}?.let {
+            set(CUSTOM_DATA_ID, it.toOption())
+        } ?: set(id, value.toOption())
+
+//            .also {
+//                Log.e("customData", "toCustomData id = $id value - $it")
+//                set(id, it.toOption()) }
+    }
+
+    private fun set(id: String, userStyleOption: UserStyleSetting.Option){
+        val editor = editorSession ?: return
+
+        val mutableUserStyle = editor.userStyle.value.toMutableUserStyle()
+        Log.e("customData", "editor set id - $id userStyleSchema - ${editor.userStyleSchema} userStyleOption - $userStyleOption")
+        mutableUserStyle[editor.userStyleSchema[UserStyleSetting.Id(id)]!!] = userStyleOption
+        editor.userStyle.value = mutableUserStyle.toUserStyle()
+    }
+
+    private fun <V : Any> V.toCustomData(propertyName: String, producer: () -> CustomData?) =
+        CustomData::class.findMember(propertyName)?.let { customMember ->
+            Log.e("customData", "toCustomData customMember = $customMember")
+            producer()?.let { newCustomData ->
+                Log.e("customData", "toCustomData this = $this newCustomData = $newCustomData")
+                customMember.setProperty(newCustomData, this)
+                newCustomData
+            }
+        }
+
+    fun <V : Any> setSilently(id: String, value: V) {
+        if(!isReady(state.value)) return
+        (value.toCustomData(id){settingsHolder.value!!.customData})?.setProperty(id, value)
+        set(id, value)
     }
 
     private fun <V : Any> V.toOption() : UserStyleSetting.Option =
@@ -69,7 +100,9 @@ class SettingsEditor @Inject constructor() {
             else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toOption type")
         }
 
-
+    companion object{
+        fun isReady(state: State) = state == State.Ready
+    }
 
 //    private fun UserStyleSetting.Option.fromOption(description: UserStyleSettingDescription<*>) : Any =
 //        when(this){

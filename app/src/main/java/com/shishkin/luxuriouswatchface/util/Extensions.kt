@@ -13,10 +13,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.wear.widget.WearableRecyclerView
-import com.shishkin.luxuriouswatchface.usersstyles.UserSettings
+import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlin.reflect.KCallable
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty1
@@ -61,9 +62,23 @@ fun <T : Any> Fragment.setUpPagedList(
 
 fun KClass<*>.allProperties() : Collection<KProperty1<*, *>> = this.members.filterIsInstance<KProperty1<*, *>>()
 
+fun KClass<*>.findMember(memberName: String) = this.members.firstOrNull { it.name == memberName }
+
+//@Suppress("UNCHECKED_CAST")
+//fun <T: Any> T.findProperty(propertyName: String) = this.findMember(propertyName)?.let {
+//    it as KProperty1<T, *>
+//}
+
+@Suppress("UNCHECKED_CAST")
+fun <T, V> KCallable<V>.setProperty(receiver: T, value: V) =
+        (this as KMutableProperty1<T, V>).set(receiver, value)
+
 @Suppress("UNCHECKED_CAST")
 fun <T: Any, V> T.setProperty(propertyName: String, value: V) =
-    (this::class.members.first { it.name == propertyName } as KMutableProperty1<T, V>).set(this, value)
+    this::class.findMember(propertyName)?.let {
+        (it as KMutableProperty1<T, V>).set(this, value)
+        true
+    } ?: false
 
 fun <T> isEquals(collection: Collection<T>, collection2: Collection<T>) =
     collection.size == collection2.size && collection.toSet() == collection2.toSet()
@@ -81,8 +96,9 @@ fun <V : Any> KProperty1<*, V>.typeFromClassifier() : KClass<V> =
     returnType.classifier as KClass<V>
 
 val CUSTOM_DATA_PROPERTY = UserSettings::customData
+const val CUSTOM_DATA_ID = "CustomValue"
 fun KProperty1<*, *>.toId() =
-    if(this == CUSTOM_DATA_PROPERTY) "CustomValue" else name
+    if(this == CUSTOM_DATA_PROPERTY) CUSTOM_DATA_ID else name
 
 inline fun <reified T : Enum<T>> Int.toEnum(): T? =
     if(this < 0) null

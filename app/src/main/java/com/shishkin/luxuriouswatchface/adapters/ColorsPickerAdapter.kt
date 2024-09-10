@@ -5,15 +5,17 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.shishkin.luxuriouswatchface.databinding.ColorsElementBinding
 import com.shishkin.luxuriouswatchface.models.ColorsElement
+import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorsPickerViewModel
 import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.util.ColorImageCreator
 import javax.inject.Inject
 
 class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsElement>)  : ModelAdapter<ColorsElement> (itemCallback)  {
 
 //    private lateinit var owner: Fragment
-    lateinit var settingsEditor: SettingsEditor
+//    lateinit var settingsEditor: SettingsEditor
+
+    lateinit var viewModel: ColorsPickerViewModel
 
     override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<ColorsElement, ColorsElementBinding> =
         { parent ->
@@ -35,7 +37,7 @@ class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsE
 
 //            owner.setFragmentResult(Settings.SETTINGS_CHANGE, bundleOf(Settings.SETTINGS_CHANGE to ))
 
-            settingsEditor.set(settingsId, model.color)
+            viewModel.saveToSetting(settingsId, model.color)
 
             Navigation.findNavController(binding.root).navigateUp()
 //            Navigation.findNavController(binding.root).navigate(

@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.usersstyles
+package com.shishkin.luxuriouswatchface.data.usersstyles
 
 import android.util.Log
 import androidx.wear.watchface.style.UserStyle
@@ -11,28 +11,18 @@ import kotlinx.serialization.json.Json
 import kotlin.reflect.KProperty1
 
 data class UserSettings (
-    val backGroundColor: Int,
-    val accessoriesColor: Int,
+    var backGroundColor: Int,
+    var accessoriesColor: Int,
     //only one allow
-    val customData: CustomData,
+    var customData: CustomData,
 )
 
 // 1024 byte max size (with serialization)
 @Serializable
 data class CustomData(
-    val topText: String = "",
-    val bottomText: String = "",
-){
-    constructor(propertyMap: Map<String, String>, copeObj: CustomData) : this(
-        propertyMap["topText"] ?: copeObj.topText,
-        propertyMap["bottomText"] ?: copeObj.bottomText,
-    )
-
-    constructor(propertyName: String, propertyValue: String, copeObj: CustomData) : this(
-        mapOf(propertyName to propertyValue),
-        copeObj
-    )
-}
+    var topText: String = "",
+    var bottomText: String = "",
+)
 
 fun UserStyle.toUserSettings() : UserSettings{
 

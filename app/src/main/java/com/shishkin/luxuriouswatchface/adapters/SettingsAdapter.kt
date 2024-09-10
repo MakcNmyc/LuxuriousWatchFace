@@ -15,19 +15,26 @@ import com.shishkin.luxuriouswatchface.models.toSettingsEditText
 import com.shishkin.luxuriouswatchface.models.toSettingsTextWithImage
 import com.shishkin.luxuriouswatchface.models.toSettingsTitle
 import com.shishkin.luxuriouswatchface.ui.settings.SettingsFragmentDirections
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
-import com.shishkin.luxuriouswatchface.util.StabilizingWorker
+import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsData>)  : ModelAdapter<SettingsData> (itemCallback) {
 
 //    lateinit var title: SettingsTitle
 
-    lateinit var settingsEditor: SettingsEditor
-    lateinit var scope: CoroutineScope
+//    lateinit var settingsEditor: SettingsEditor
 
-    val textWorkers = HashMap<String, StabilizingWorker<String>>()
+    lateinit var viewModel: SettingsViewModel
+
+    lateinit var scope: CoroutineScope
+    val textsFlows = HashMap<String, Flow<String>>()
 
     companion object {
         const val TITLE = 0
@@ -35,6 +42,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         const val EDIT_TEXT = 2
 
 //        const val ITEM_PADDING = 1
+        const val TEXT_SAVING_DELAY = 2000L
     }
 
     override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<SettingsData, SettingsTextWithImageBinding> =
@@ -112,28 +120,49 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         binding.model = model.toSettingsTitle()
     }
 
+    @OptIn(FlowPreview::class)
     private fun setUpEditText(model: SettingsData, binding: SettingsEditTextBinding) {
 
         binding.model = model.toSettingsEditText()
 
         val id = model.id
+//        textsFlows[id]
 
-        if(!textWorkers.containsKey(model.id)) textWorkers[id] = StabilizingWorker(scope,
-            { v->
-                Log.e("customData", "StabilizingWorker text - $v")
-                 settingsEditor.set(id, v)
+
+
+        callbackFlow {
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    Log.e("textsFlows", "beforeTextChanged p0 - $p0 p1 - $p1 p2 - $p2 p3 - $p3")
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    Log.e("textsFlows", "onTextChanged p0 - $p0 p1 - $p1 p2 - $p2 p3 - $p3")
+                }
+
+                override fun afterTextChanged(v: Editable?) {
+                    Log.e("textsFlows", "afterTextChanged $v")
+                    if(binding.editor.hasFocus()) {
+                        Log.e("textsFlows", "afterTextChanged trySend - $v")
+                        trySend(v.toString())
+                    }
+                }
+            }.also {
+                binding.editor.addTextChangedListener(it)
+                awaitClose { binding.editor.removeTextChangedListener(it) }
             }
-        )
+        }.debounce(TEXT_SAVING_DELAY).also{
 
-        binding.editor.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+//            binding.editor.addTextChangedListener(qwe)
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                textWorkers[id]?.setData(p0.toString())
+            scope.launch {
+                it.collect{ text ->
+                    Log.e("customData", " callbackFlow collectLatest id - $id text - $text")
+                    viewModel.saveTextSetting(id, text)
+                }
             }
-        })
+        }
+
 
 //        binding.editor.setOnEditorActionListener { textView, i, _ ->
 //            Log.e("customData", "setOnEditorActionListener i = $i")

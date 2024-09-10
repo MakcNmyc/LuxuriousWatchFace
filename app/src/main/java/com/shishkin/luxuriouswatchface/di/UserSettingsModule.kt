@@ -1,7 +1,7 @@
 package com.shishkin.luxuriouswatchface.di
 
-//import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchema
-//import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchemaImp
+//import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
+//import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchemaImp
 //import dagger.Binds
 //import dagger.Module
 //import dagger.hilt.InstallIn

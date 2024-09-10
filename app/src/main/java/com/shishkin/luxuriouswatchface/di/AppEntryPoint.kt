@@ -1,6 +1,6 @@
 package com.shishkin.luxuriouswatchface.di
 
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchema
+import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

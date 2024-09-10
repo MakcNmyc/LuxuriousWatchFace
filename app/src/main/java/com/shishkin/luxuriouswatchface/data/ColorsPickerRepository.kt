@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.usersstyles
+package com.shishkin.luxuriouswatchface.data
 
 import android.content.Context
 import android.graphics.Color

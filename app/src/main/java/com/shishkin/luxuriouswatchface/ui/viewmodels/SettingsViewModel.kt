@@ -2,34 +2,31 @@ package com.shishkin.luxuriouswatchface.ui.viewmodels
 
 import android.content.Context
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
+import com.shishkin.luxuriouswatchface.data.SettingsRepository
+import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsEditor
+import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.models.SettingsData
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsEditor
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsRepository
-import com.shishkin.luxuriouswatchface.usersstyles.SettingsSchema
 import com.shishkin.luxuriouswatchface.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(@ApplicationContext context: Context) : ViewModel() {
+class SettingsViewModel @Inject constructor(@ApplicationContext val context: Context) : ViewModel() {
 
 //    lateinit var settingsChanges: StateFlow<SettingsChanges?>
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
-
-    @Inject
-    lateinit var schema: SettingsSchema
 
     private val title = SettingsData(
         TITLE_ID,
@@ -40,9 +37,9 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
     private var _settingsData: MutableStateFlow<PagingData<SettingsData>?> = MutableStateFlow(null)
     var settingsData = _settingsData.asStateFlow()
 
-    init {
-        Log.e("settingsIdFlow", "SettingsViewModel init")
-    }
+//    init {
+//        Log.e("settingsIdFlow", "SettingsViewModel init")
+//    }
 
 //    fun initArg(context: Context, savedStateHandle: SavedStateHandle){
 //        settingsChanges = savedStateHandle
@@ -60,25 +57,40 @@ class SettingsViewModel @Inject constructor(@ApplicationContext context: Context
 //        pagedList = createSettingsList(context, settingsEditor).asPagedList()
 //    }
 
-    fun initSettingsData(context: Context, settingsEditor: SettingsEditor){
+    fun initSettingsSession(activity: ComponentActivity){
+        settingsRepository.initSession(activity)
+        subscribeToSettingsChange(context)
+    }
+
+    suspend fun subscribeToSettingsState(listener : (SettingsEditor.State) -> Unit){
+        settingsRepository.subscribeToSettingsState(listener)
+    }
+
+    private fun subscribeToSettingsChange(context: Context){
         if(_settingsData.value == null)
             viewModelScope.launch {
-                settingsEditor.settingsHolder.collectLatest{
+                settingsRepository.subscribeToSettingsChange {
                     Log.e("customData", "collectLatest settingsHolder is ${it}")
-                    _settingsData.value = createSettingsData(context, settingsEditor)
+                    _settingsData.value = createSettingsData(context, it)
                 }
             }
     }
 
-    private fun createSettingsData(context: Context, settingsEditor: SettingsEditor) =
+    private fun createSettingsData(context: Context, userSettings: UserSettings?) =
         arrayListOf(title).apply {
-            addAll(settingsRepository.getSettingsData(context, settingsEditor, schema))
+            addAll(settingsRepository.getSettingsListData(context, userSettings))
         }.toPagingData()
 
-    override fun onCleared() {
-        Log.e("settingsIdFlow", "SettingsViewModel onCleared")
-        super.onCleared()
+
+    fun saveTextSetting(id: String, value: String){
+        Log.e("customData", "SettingsViewModel saveTextSetting SettingsRepository - ${settingsRepository} id - $id value - $value")
+        settingsRepository.setSettingSilently(id, value)
     }
+
+//    override fun onCleared() {
+//        Log.e("settingsIdFlow", "SettingsViewModel onCleared")
+//        super.onCleared()
+//    }
 
 
     //        pagedList = createSettingsList(context, settingsEditor).asPagedList{ dataSource ->

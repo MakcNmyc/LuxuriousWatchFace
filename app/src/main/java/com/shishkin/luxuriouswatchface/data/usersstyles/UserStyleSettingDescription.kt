@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.usersstyles
+package com.shishkin.luxuriouswatchface.data.usersstyles
 
 import android.content.res.Resources
 import android.graphics.drawable.Icon
