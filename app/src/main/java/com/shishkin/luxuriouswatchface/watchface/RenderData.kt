@@ -43,7 +43,7 @@ data class RenderDataInit(
     val canvas: Canvas
 )
 
-fun createRenderData(context: Context, settings: UserSettings?, schema: SettingsSchema) : RenderData{
+fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSettings? = null) : RenderData{
 
     val font = ResourcesCompat.getFont(context, R.font.afterlife_regular)!!
 
