@@ -11,7 +11,7 @@ import kotlinx.serialization.json.Json
 import kotlin.reflect.KProperty1
 
 data class UserSettings (
-    var backGroundColor: Int,
+    var backgroundColor: Int,
     var accessoriesColor: Int,
     //only one allow
     var customData: CustomData,
@@ -34,7 +34,7 @@ fun UserStyle.toUserSettings() : UserSettings{
     }
 
     return UserSettings (
-        backGroundColor = UserSettings::backGroundColor.optionValue(settingsMap),
+        backgroundColor = UserSettings::backgroundColor.optionValue(settingsMap),
         accessoriesColor = UserSettings::accessoriesColor.optionValue(settingsMap),
         customData = UserSettings::customData.optionValue(settingsMap),
     )

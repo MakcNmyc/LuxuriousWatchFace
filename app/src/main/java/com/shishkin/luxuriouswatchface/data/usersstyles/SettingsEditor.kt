@@ -21,11 +21,14 @@ class SettingsEditor @Inject constructor() {
 
     private var editorSession: EditorSession? = null
 
-    private val _settingsHolder = MutableStateFlow<UserSettings?>(null)
-    val settingsHolder = _settingsHolder.asStateFlow()
+//    private val _settingsHolder = MutableStateFlow<UserSettings?>(null)
+//    val settingsHolder = _settingsHolder.asStateFlow()
 
     private val _state = MutableStateFlow(State.WAITING_INIT)
     val state = _state.asStateFlow()
+
+    @Inject
+    lateinit var settingsHolder: SettingsHolder
 
     private val delayedActions = ArraySet<()->Unit>()
 
@@ -39,15 +42,7 @@ class SettingsEditor @Inject constructor() {
 
                 editorSession = editor
 
-                launch {
-                    editor.userStyle.collectLatest{ userStyle ->
-                        _state.value = State.LOADING
-
-                        _settingsHolder.value = userStyle.toUserSettings()
-
-                        _state.value = State.READY
-                    }
-                }
+                settingsHolder.subscribeToStyle(editor.userStyle, activity.lifecycleScope, _state)
 
                 state.collectLatest { v ->
                     if(isReady(v)) {
@@ -70,7 +65,7 @@ class SettingsEditor @Inject constructor() {
 
     fun <V : Any> set(id: String, value: V) {
         doWhenReady{
-            value.toCustomData(id){settingsHolder.value!!.customData.copy()}?.let {
+            value.toCustomData(id){settingsHolder.settings.value!!.customData.copy()}?.let {
                 set(CUSTOM_DATA_ID, it.toOption())
             } ?: set(id, value.toOption())
         }
@@ -101,7 +96,7 @@ class SettingsEditor @Inject constructor() {
 
     fun <V : Any> setSilently(id: String, value: V) {
         doWhenReady{
-            (value.toCustomData(id){settingsHolder.value!!.customData})?.setProperty(id, value)
+            (value.toCustomData(id){settingsHolder.settings.value!!.customData})?.setProperty(id, value)
             set(id, value)
         }
     }

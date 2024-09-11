@@ -12,15 +12,14 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
 class UserStyleSettingDescription<V : Any>(
-//    private val editorSession: EditorSession,
     val property: KProperty1<UserSettings, V>,
     @StringRes val displayNameResourceId: Int,
     @StringRes private val descriptionResourceId: Int,
+    val defaultValue: V,
     private val icon: Icon? = null,
     private val minimumValue: Long = Int.MIN_VALUE.toLong(),
     private val maximumValue: Long = Int.MAX_VALUE.toLong(),
     private val affectsWatchFaceLayers: Collection<WatchFaceLayer> = listOf(WatchFaceLayer.BASE),
-    private val defaultValue: V? = null,
 ) {
 
     fun create(resources: Resources): UserStyleSetting =
@@ -34,7 +33,7 @@ class UserStyleSettingDescription<V : Any>(
                 minimumValue,
                 maximumValue,
                 affectsWatchFaceLayers,
-                (defaultValue ?: 0L) as Long,
+                (defaultValue as Int).toLong(),
                 null
             )
             CustomData::class -> UserStyleSetting.CustomValueUserStyleSetting(
@@ -44,22 +43,4 @@ class UserStyleSettingDescription<V : Any>(
 
             else -> throw IllegalArgumentException("Unsupported ${javaClass.name} create type ${property.returnType.classifier as KClass<*>}")
         }
-
-//    fun get() = editorSession.userStyleSchema[id]!!
-//
-//    fun set(userStyleOption: UserStyleSetting.Option){
-//        val mutableUserStyle = editorSession.userStyle.value.toMutableUserStyle()
-//        mutableUserStyle[get()] = userStyleOption
-//        editorSession.userStyle.value = mutableUserStyle.toUserStyle()
-//    }
-//
-//    fun set(value: V){
-//        set(toOption(value))
-//    }
-//
-//    private fun toOption(value: V) : UserStyleSetting.Option =
-//        when (value) {
-//            is Int -> UserStyleSetting.LongRangeUserStyleSetting.LongRangeOption(value.toLong())
-//            else -> throw IllegalArgumentException("Unsupported ${javaClass.name} toOption type")
-//        }
 }

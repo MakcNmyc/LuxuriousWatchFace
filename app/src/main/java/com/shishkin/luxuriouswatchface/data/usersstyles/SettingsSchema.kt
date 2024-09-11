@@ -1,6 +1,7 @@
 package com.shishkin.luxuriouswatchface.data.usersstyles
 
 import android.content.res.Resources
+import android.graphics.Color
 import androidx.wear.watchface.style.UserStyleSchema
 import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.util.allProperties
@@ -12,21 +13,24 @@ import kotlin.reflect.KProperty1
 class SettingsSchema @Inject constructor() {
 
     val backgroundColor = UserStyleSettingDescription(
-        UserSettings::backGroundColor,
+        UserSettings::backgroundColor,
         R.string.setting_background_color_name,
-        R.string.setting_background_color_description
+        R.string.setting_background_color_description,
+        Color.BLACK
     )
 
     val accessoriesColor = UserStyleSettingDescription(
         UserSettings::accessoriesColor,
         R.string.setting_accessories_color_name,
-        R.string.setting_accessories_color_description
+        R.string.setting_accessories_color_description,
+        Color.BLUE
     )
 
     val customData = UserStyleSettingDescription(
         UserSettings::customData,
         R.string.setting_custom_data_name,
-        R.string.setting_custom_data_description
+        R.string.setting_custom_data_description,
+        CustomData()
     )
 
 //    val topText = UserStyleSettingDescription(

@@ -1,5 +1,6 @@
 package com.shishkin.luxuriouswatchface.watchface
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
@@ -17,12 +18,15 @@ import androidx.wear.watchface.WatchFaceType
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyleSchema
+import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
 import com.shishkin.luxuriouswatchface.di.AppEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import kotlin.math.PI
 import kotlin.math.cos
@@ -32,7 +36,10 @@ private const val FRAME_PERIOD_MS_TICKING = 16L
 
 class LuxuriousWatchFace : WatchFaceService() {
 
-    private val renderData by lazy {createRenderData(applicationContext)}
+    private val schema by lazy {
+        EntryPointAccessors.fromApplication(applicationContext, AppEntryPoint::class.java)
+            .createSettingsSchema()
+    }
 
     override suspend fun createWatchFace(
         surfaceHolder: SurfaceHolder,
@@ -46,23 +53,21 @@ class LuxuriousWatchFace : WatchFaceService() {
             currentUserStyleRepository = currentUserStyleRepository,
             watchState = watchState,
             canvasType = CanvasType.HARDWARE,
-            complicationSlotsManager = complicationSlotsManager,
-            renderData
+            applicationContext,
+            schema
         )
     )
 
     override fun createUserStyleSchema(): UserStyleSchema =
-        EntryPointAccessors.fromApplication(applicationContext, AppEntryPoint::class.java)
-            .createSettingsSchema()
-            .createUserStyleSchema(resources)
+        schema.createUserStyleSchema(resources)
 
     class AnalogWatchCanvasRenderer(
         surfaceHolder: SurfaceHolder,
         currentUserStyleRepository: CurrentUserStyleRepository,
         watchState: WatchState,
         canvasType: Int,
-        private val complicationSlotsManager: ComplicationSlotsManager,
-        private val renderData : RenderData
+        applicationContext: Context,
+        schema: SettingsSchema
     ) : Renderer.CanvasRenderer2<AnalogWatchCanvasRenderer.SharedAssets>(
         surfaceHolder,
         currentUserStyleRepository,
@@ -75,13 +80,23 @@ class LuxuriousWatchFace : WatchFaceService() {
         private val scope: CoroutineScope =
             CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-//        init {
-//            scope.launch {
-//                currentUserStyleRepository.userStyle.collect { userStyle ->
-//                    updateWatchFaceData(userStyle)
-//                }
-//            }
-//        }
+        private val settingsHolder = EntryPointAccessors
+            .fromApplication(applicationContext, AppEntryPoint::class.java)
+            .createSettingsHolder()
+
+        init {
+            settingsHolder.subscribeToStyle(currentUserStyleRepository.userStyle, scope)
+        }
+
+        private lateinit var renderData: RenderData
+
+        init {
+            scope.launch {
+                settingsHolder.settings.collectLatest { v ->
+                    renderData = createRenderData(applicationContext, v, schema)
+                }
+            }
+        }
 
         override fun onDestroy() {
             scope.cancel("AnalogWatchCanvasRenderer scope clear() request")
@@ -136,7 +151,7 @@ class LuxuriousWatchFace : WatchFaceService() {
             )
 
             drawHand(generalData, zonedDateTime.minute, Color.RED)
-            drawHand(generalData, zonedDateTime.hour % 12 * 60 + zonedDateTime.minute, Color.RED, true)
+            drawHand(generalData, zonedDateTime.hour % 12 * 60 + zonedDateTime.minute, renderData.minuteHandColor, true)
 
             drawHand(generalData, renderData.hourHandData, zonedDateTime.hour % 12 * 60 + zonedDateTime.minute, true)
 

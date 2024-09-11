@@ -8,6 +8,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
 import com.shishkin.luxuriouswatchface.R
+import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
+import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.util.fromDimension
 import kotlin.math.roundToInt
 
@@ -15,6 +17,7 @@ data class RenderData(
     val context: Context,
     val backgroundImageProvider: ScaledImageProvider,
     val hourHandData: HandData,
+    val minuteHandColor: Int,
     val topTextData: TextData,
     val bottomTextData: TextData,
 ){
@@ -40,7 +43,7 @@ data class RenderDataInit(
     val canvas: Canvas
 )
 
-fun createRenderData(context: Context) : RenderData{
+fun createRenderData(context: Context, settings: UserSettings?, schema: SettingsSchema) : RenderData{
 
     val font = ResourcesCompat.getFont(context, R.font.afterlife_regular)!!
 
@@ -57,6 +60,7 @@ fun createRenderData(context: Context) : RenderData{
             widthPercent = 10,
             heightPercent = 45
         ),
+        settings?.backgroundColor ?: schema.backgroundColor.defaultValue,
         TextData(
             "qwerty uddiopas",
             R.dimen.top_text_size.fromDimension(context),

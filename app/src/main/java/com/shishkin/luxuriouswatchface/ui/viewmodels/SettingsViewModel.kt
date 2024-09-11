@@ -34,6 +34,11 @@ class SettingsViewModel @Inject constructor(@ApplicationContext val context: Con
         context.resources.getString(R.string.settings_title),
     )
 
+    private val footer = SettingsData(
+        FOOTER_ID,
+        SettingsAdapter.FOOTER,
+    )
+
     private var _settingsData: MutableStateFlow<PagingData<SettingsData>?> = MutableStateFlow(null)
     var settingsData = _settingsData.asStateFlow()
 
@@ -79,8 +84,8 @@ class SettingsViewModel @Inject constructor(@ApplicationContext val context: Con
     private fun createSettingsData(context: Context, userSettings: UserSettings?) =
         arrayListOf(title).apply {
             addAll(settingsRepository.getSettingsListData(context, userSettings))
+            add(footer)
         }.toPagingData()
-
 
     fun saveTextSetting(id: String, value: String){
         Log.e("customData", "SettingsViewModel saveTextSetting SettingsRepository - ${settingsRepository} id - $id value - $value")
@@ -176,7 +181,8 @@ class SettingsViewModel @Inject constructor(@ApplicationContext val context: Con
 
 
     companion object {
-        const val TITLE_ID = "SETTINGS_TITLE"
+        const val TITLE_ID = "settingsTitle"
+        const val FOOTER_ID = "footerId"
         const val SETTINGS_ID_NOT_SET = ""
         val SETTINGS_CHANGES_NOT_SET = null
     }

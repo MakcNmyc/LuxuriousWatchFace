@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.luxuriouswatchface.databinding.SettingsEditTextBinding
+import com.shishkin.luxuriouswatchface.databinding.SettingsFooterBinding
 import com.shishkin.luxuriouswatchface.databinding.SettingsTextWithImageBinding
 import com.shishkin.luxuriouswatchface.databinding.SettingsTitleBinding
 import com.shishkin.luxuriouswatchface.models.SettingsData
@@ -19,7 +20,6 @@ import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -34,12 +34,13 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
     lateinit var viewModel: SettingsViewModel
 
     lateinit var scope: CoroutineScope
-    val textsFlows = HashMap<String, Flow<String>>()
+//    val textsFlows = HashMap<String, Flow<String>>()
 
     companion object {
         const val TITLE = 0
         const val TEXT_WITH_IMAGE = 1
         const val EDIT_TEXT = 2
+        const val FOOTER = 3
 
 //        const val ITEM_PADDING = 1
         const val TEXT_SAVING_DELAY = 500L
@@ -78,6 +79,10 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
                 parent,
                 SettingsEditTextBinding::inflate,
                 this::setUpEditText
+            )
+            FOOTER -> BindingViewHolder(
+                parent,
+                SettingsFooterBinding::inflate,
             )
             else -> super.onCreateViewHolder(parent, viewType)
         }
@@ -127,8 +132,6 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
 
         val id = model.id
 //        textsFlows[id]
-
-
 
         callbackFlow {
             object : TextWatcher {

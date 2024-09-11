@@ -41,7 +41,7 @@ import javax.inject.Singleton
     }
 
     suspend fun subscribeToSettingsChange(listener : (UserSettings?) -> Unit){
-        settingsEditor.settingsHolder.collectLatest{
+        settingsEditor.settingsHolder.settings.collectLatest{
             Log.e("customData", "collectLatest settingsHolder is ${it}")
             listener(it)
         }
@@ -79,10 +79,10 @@ import javax.inject.Singleton
         userSettings?.let { settings ->
             arrayListOf(
                 SettingsData(
-                    id = UserSettings::backGroundColor.toId(),
+                    id = UserSettings::backgroundColor.toId(),
                     type = SettingsAdapter.TEXT_WITH_IMAGE,
                     title = context.resources.getString(schema.backgroundColor.displayNameResourceId),
-                    colorImage = settings.backGroundColor,
+                    colorImage = settings.backgroundColor,
                     clickListenerType = SettingsAdapter.ClickListenerTypes.COLOR_PICK_LISTENER.toInt()
                 ),
                 SettingsData(
