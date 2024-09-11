@@ -88,12 +88,12 @@ class LuxuriousWatchFace : WatchFaceService() {
             settingsHolder.subscribeToStyle(currentUserStyleRepository.userStyle, scope)
         }
 
-        private lateinit var renderData: RenderData
+        private var renderData = createRenderData(applicationContext, null, schema)
 
         init {
             scope.launch {
                 settingsHolder.settings.collectLatest { v ->
-                    renderData = createRenderData(applicationContext, v, schema)
+                    if(v != null) renderData = createRenderData(applicationContext, v, schema)
                 }
             }
         }
