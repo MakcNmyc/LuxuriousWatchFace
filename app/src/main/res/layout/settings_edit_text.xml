@@ -12,13 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/settings_elements_padding">
+        android:paddingLeft="@dimen/settings_elements_padding"
+        android:paddingRight="@dimen/settings_elements_padding"
+        android:paddingBottom="@dimen/settings_elements_distance">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="@{model.title}"
             android:textSize="@dimen/settings_element_text_size"
             tools:text="Title of edit text setting" />

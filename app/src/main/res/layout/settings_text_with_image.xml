@@ -12,7 +12,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/settings_elements_padding"
+        android:paddingLeft="@dimen/settings_elements_padding"
+        android:paddingRight="@dimen/settings_elements_padding"
+        android:paddingBottom="@dimen/settings_elements_distance"
         android:orientation="horizontal">
 
         <TextView
