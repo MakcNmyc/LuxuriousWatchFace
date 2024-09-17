@@ -5,7 +5,7 @@ import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
-import com.shishkin.luxuriouswatchface.util.typeFromClassifier
+import com.shishkin.luxuriouswatchface.ui.util.typeFromClassifier
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.reflect.KClass

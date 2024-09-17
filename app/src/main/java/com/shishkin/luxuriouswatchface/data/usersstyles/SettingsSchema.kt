@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import androidx.wear.watchface.style.UserStyleSchema
 import com.shishkin.luxuriouswatchface.R
-import com.shishkin.luxuriouswatchface.util.allProperties
+import com.shishkin.luxuriouswatchface.ui.util.allProperties
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.reflect.KProperty1

@@ -25,7 +25,8 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsData>)  : ModelAdapter<SettingsData> (itemCallback) {
+class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsData>) :
+    ModelAdapter<SettingsData>(itemCallback) {
 
 //    lateinit var title: SettingsTitle
 
@@ -42,7 +43,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         const val EDIT_TEXT = 2
         const val FOOTER = 3
 
-//        const val ITEM_PADDING = 1
+        //        const val ITEM_PADDING = 1
         const val TEXT_SAVING_DELAY = 500L
     }
 
@@ -69,21 +70,24 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
 //    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        when(viewType){
+        when (viewType) {
             TITLE -> ModelViewHolder(
                 parent,
                 SettingsTitleBinding::inflate,
                 this::setUpTitle
             )
+
             EDIT_TEXT -> ModelViewHolder(
                 parent,
                 SettingsEditTextBinding::inflate,
                 this::setUpEditText
             )
+
             FOOTER -> BindingViewHolder(
                 parent,
                 SettingsFooterBinding::inflate,
             )
+
             else -> super.onCreateViewHolder(parent, viewType)
         }
 
@@ -145,7 +149,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
 
                 override fun afterTextChanged(v: Editable?) {
                     Log.e("textsFlows", "afterTextChanged $v")
-                    if(binding.editor.hasFocus()) {
+                    if (binding.editor.hasFocus()) {
                         Log.e("textsFlows", "afterTextChanged trySend - $v")
                         trySend(v.toString())
                     }
@@ -154,12 +158,12 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
                 binding.editor.addTextChangedListener(it)
                 awaitClose { binding.editor.removeTextChangedListener(it) }
             }
-        }.debounce(TEXT_SAVING_DELAY).also{
+        }.debounce(TEXT_SAVING_DELAY).also {
 
 //            binding.editor.addTextChangedListener(qwe)
 
             scope.launch {
-                it.collect{ text ->
+                it.collect { text ->
                     Log.e("customData", " callbackFlow collectLatest id - $id text - $text")
                     viewModel.saveTextSetting(id, text)
                 }
@@ -188,7 +192,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         )
     }
 
-    enum class ClickListenerTypes{
+    enum class ClickListenerTypes {
         COLOR_PICK_LISTENER
     }
 

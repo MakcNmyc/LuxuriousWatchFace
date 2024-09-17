@@ -32,6 +32,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
+
 private const val FRAME_PERIOD_MS_TICKING = 16L
 
 class LuxuriousWatchFace : WatchFaceService() {
@@ -125,7 +126,7 @@ class LuxuriousWatchFace : WatchFaceService() {
             zonedDateTime: ZonedDateTime,
             sharedAssets: SharedAssets
         ) {
-            renderData.init { RenderDataInit(canvas) }
+            renderData.init(RenderDataInit(canvas))
 
             drawBackground(canvas)
             drawHands(canvas, zonedDateTime, renderParameters.drawMode)
@@ -133,13 +134,12 @@ class LuxuriousWatchFace : WatchFaceService() {
         }
 
         private fun drawBackground(canvas: Canvas){
-                canvas.drawBitmap(
-                renderData.backgroundImageProvider(),
-                    0F,
-                    0F,
-                    null
-                )
+//            canvas.drawBitmapWithBackgroundColor()
+            canvas.drawBitmap(renderData.backgroundImageProvider())
         }
+
+
+
 
         private fun drawHands(canvas: Canvas, zonedDateTime: ZonedDateTime, drawMode: DrawMode) {
             val centerX = canvas.width / 2f

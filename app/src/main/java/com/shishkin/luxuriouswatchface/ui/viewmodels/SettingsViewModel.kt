@@ -12,7 +12,7 @@ import com.shishkin.luxuriouswatchface.data.SettingsRepository
 import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.models.SettingsData
-import com.shishkin.luxuriouswatchface.util.toPagingData
+import com.shishkin.luxuriouswatchface.ui.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow

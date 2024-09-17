@@ -24,16 +24,25 @@
             android:textSize="@dimen/settings_element_text_size"
             tools:text="Title of edit text setting" />
 
-        <EditText
-            android:id="@+id/editor"
-            android:layout_width="match_parent"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/settings_text_edit_hint"
-            android:inputType="text"
-            android:text="@={model.text}"
-            android:maxLength="@integer/watchface_max_string_size"
-            android:imeOptions="actionDone"
-            />
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/settings_text_edit_hint"
+                android:inputType="text"
+                android:text="@={model.text}"
+                android:maxLength="@integer/watchface_max_string_size"
+                android:imeOptions="actionDone"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 

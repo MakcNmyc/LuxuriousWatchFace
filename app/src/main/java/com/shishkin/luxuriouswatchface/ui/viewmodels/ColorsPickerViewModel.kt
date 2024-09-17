@@ -9,7 +9,7 @@ import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.data.ColorsPickerRepository
 import com.shishkin.luxuriouswatchface.data.SettingsRepository
 import com.shishkin.luxuriouswatchface.models.ColorsElement
-import com.shishkin.luxuriouswatchface.util.toPagingData
+import com.shishkin.luxuriouswatchface.ui.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow

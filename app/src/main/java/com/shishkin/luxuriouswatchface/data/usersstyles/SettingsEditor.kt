@@ -6,9 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.watchface.editor.EditorSession
 import androidx.wear.watchface.style.UserStyleSetting
-import com.shishkin.luxuriouswatchface.util.CUSTOM_DATA_ID
-import com.shishkin.luxuriouswatchface.util.findMember
-import com.shishkin.luxuriouswatchface.util.setProperty
+import com.shishkin.luxuriouswatchface.ui.util.CUSTOM_DATA_ID
+import com.shishkin.luxuriouswatchface.ui.util.findMember
+import com.shishkin.luxuriouswatchface.ui.util.setProperty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

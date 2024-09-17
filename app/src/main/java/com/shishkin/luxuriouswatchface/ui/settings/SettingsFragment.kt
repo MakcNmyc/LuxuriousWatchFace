@@ -12,9 +12,9 @@ import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
 import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.databinding.SettingsListBinding
 import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
-import com.shishkin.luxuriouswatchface.util.createBinding
-import com.shishkin.luxuriouswatchface.util.setUpBaseList
-import com.shishkin.luxuriouswatchface.util.toVisibility
+import com.shishkin.luxuriouswatchface.ui.util.createBinding
+import com.shishkin.luxuriouswatchface.ui.util.setUpBaseList
+import com.shishkin.luxuriouswatchface.ui.util.toVisibility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.shishkin.luxuriouswatchface.util
+package com.shishkin.luxuriouswatchface.ui.util
 
 import android.content.Context
 import android.content.res.ColorStateList

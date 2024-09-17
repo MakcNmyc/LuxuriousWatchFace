@@ -7,7 +7,7 @@ import com.shishkin.luxuriouswatchface.databinding.ColorsElementBinding
 import com.shishkin.luxuriouswatchface.models.ColorsElement
 import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorsPickerViewModel
 import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
-import com.shishkin.luxuriouswatchface.util.ColorImageCreator
+import com.shishkin.luxuriouswatchface.ui.util.ColorImageCreator
 import javax.inject.Inject
 
 class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsElement>)  : ModelAdapter<ColorsElement> (itemCallback)  {

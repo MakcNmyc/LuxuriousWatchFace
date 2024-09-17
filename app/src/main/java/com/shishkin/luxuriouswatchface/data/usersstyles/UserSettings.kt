@@ -3,8 +3,8 @@ package com.shishkin.luxuriouswatchface.data.usersstyles
 import android.util.Log
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
-import com.shishkin.luxuriouswatchface.util.toId
-import com.shishkin.luxuriouswatchface.util.typeFromClassifier
+import com.shishkin.luxuriouswatchface.ui.util.toId
+import com.shishkin.luxuriouswatchface.ui.util.typeFromClassifier
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -20,9 +20,14 @@ data class UserSettings (
 // 1024 byte max size (with serialization)
 @Serializable
 data class CustomData(
-    var topText: String = "",
-    var bottomText: String = "",
-)
+    var topText: String = DEFAULT_TOP_TEXT,
+    var bottomText: String = DEFAULT_BOTTOM_TEXT,
+){
+    companion object{
+        const val DEFAULT_TOP_TEXT = ""
+        const val DEFAULT_BOTTOM_TEXT = ""
+    }
+}
 
 fun UserStyle.toUserSettings() : UserSettings{
 

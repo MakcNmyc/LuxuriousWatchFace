@@ -10,8 +10,8 @@ import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsEditor
 import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
 import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.models.SettingsData
-import com.shishkin.luxuriouswatchface.util.toId
-import com.shishkin.luxuriouswatchface.util.toInt
+import com.shishkin.luxuriouswatchface.ui.util.toId
+import com.shishkin.luxuriouswatchface.ui.util.toInt
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 import javax.inject.Singleton

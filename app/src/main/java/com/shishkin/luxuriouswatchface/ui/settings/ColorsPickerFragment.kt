@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.shishkin.luxuriouswatchface.adapters.ColorsPickerAdapter
 import com.shishkin.luxuriouswatchface.databinding.ColorsListBinding
 import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorsPickerViewModel
-import com.shishkin.luxuriouswatchface.util.createBinding
-import com.shishkin.luxuriouswatchface.util.setUpBaseList
+import com.shishkin.luxuriouswatchface.ui.util.createBinding
+import com.shishkin.luxuriouswatchface.ui.util.setUpBaseList
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
