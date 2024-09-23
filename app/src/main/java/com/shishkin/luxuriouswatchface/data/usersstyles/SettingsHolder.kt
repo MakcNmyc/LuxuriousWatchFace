@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SettingsHolder @Inject constructor(
-){
+class SettingsHolder @Inject constructor(){
 
     private val _settings = MutableStateFlow<UserSettings?>(null)
     val settings = _settings.asStateFlow()

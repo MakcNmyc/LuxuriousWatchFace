@@ -1,6 +1,5 @@
 package com.shishkin.luxuriouswatchface.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
@@ -9,7 +8,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.luxuriouswatchface.models.ListElementModel
-import com.shishkin.luxuriouswatchface.models.SettingsData
 import javax.inject.Inject
 
 abstract class ModelAdapter<V : ListElementModel<*>>(itemCallback: ItemCallback<V>) :
@@ -18,17 +16,14 @@ abstract class ModelAdapter<V : ListElementModel<*>>(itemCallback: ItemCallback<
     abstract val vhProducer: (parent: ViewGroup) -> ModelViewHolder<V, *>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.e("qwe", "onCreateViewHolder")
         return vhProducer(parent)
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        Log.e("colorsPick", "onBindViewHolder position = $position")
         when (viewHolder) {
             is ModelProducerVH<*, *> -> viewHolder.setModel()
             is ModelViewHolder<*, *> -> getItem(position)?.let {
-                Log.e("colorsPick", "onBindViewHolder ModelViewHolder color = ${if(it is SettingsData) it.colorImage else "not settings"}")
                 (viewHolder as ModelViewHolder<V, *>).setModel(it)
             }
         }
@@ -76,7 +71,6 @@ class ItemCallback<T : ListElementModel<*>> @Inject constructor() : DiffUtil.Ite
     }
 
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
-        Log.e("colorsPick", "DiffUtil.ItemCallback oldItem.id - ${oldItem.id} areContentsTheSame ${oldItem == newItem}")
         return oldItem == newItem
     }
 }

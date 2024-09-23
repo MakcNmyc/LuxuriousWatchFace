@@ -14,6 +14,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        multiDexEnabled = true
         applicationId = "com.shishkin.luxuriouswatchface"
         minSdk = 28
         targetSdk = 30

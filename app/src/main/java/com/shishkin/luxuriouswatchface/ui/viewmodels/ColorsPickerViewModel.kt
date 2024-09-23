@@ -1,7 +1,6 @@
 package com.shishkin.luxuriouswatchface.ui.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
@@ -39,7 +38,6 @@ class ColorsPickerViewModel @Inject constructor(@ApplicationContext context: Con
         colorsPickerRepository.getBackGroundsColors(context).toPagingData()
 
     fun saveToSetting(id: String, value: Int){
-        Log.e("customData", "ColorsPickerViewModel saveToSetting SettingsRepository - ${settingsRepository} id - $id value - $value")
         settingsRepository.setSetting(id, value)
     }
 }

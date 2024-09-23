@@ -1,7 +1,6 @@
 package com.shishkin.luxuriouswatchface.ui.util
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,6 @@ fun <T : Any> Fragment.setUpBaseList(
         setHasFixedSize(true)
         this.layoutManager = layoutManager
         this.adapter = adapter
-//        isEdgeItemsCenteringEnabled = true
         isCircularScrollingGestureEnabled = false
     }
 }
@@ -52,7 +50,6 @@ fun <T : Any> Fragment.setUpPagedList(
 ){
     this.viewLifecycleOwner.lifecycleScope.launch {
         pagedData.collectLatest{ data ->
-            Log.e("colorsPick", "collectLatest paged data ${data}")
             data?.let {
                 adapter.submitData(data)
             }
@@ -64,11 +61,6 @@ fun KClass<*>.allProperties() : Collection<KProperty1<*, *>> = this.members.filt
 
 fun KClass<*>.findMember(memberName: String) = this.members.firstOrNull { it.name == memberName }
 
-//@Suppress("UNCHECKED_CAST")
-//fun <T: Any> T.findProperty(propertyName: String) = this.findMember(propertyName)?.let {
-//    it as KProperty1<T, *>
-//}
-
 @Suppress("UNCHECKED_CAST")
 fun <T, V> KCallable<V>.setProperty(receiver: T, value: V) =
         (this as KMutableProperty1<T, V>).set(receiver, value)
@@ -79,9 +71,6 @@ fun <T: Any, V> T.setProperty(propertyName: String, value: V) =
         (it as KMutableProperty1<T, V>).set(this, value)
         true
     } ?: false
-
-fun <T> isEquals(collection: Collection<T>, collection2: Collection<T>) =
-    collection.size == collection2.size && collection.toSet() == collection2.toSet()
 
 fun Int.fromDimension(context: Context) =
     context.resources.getDimension(this)

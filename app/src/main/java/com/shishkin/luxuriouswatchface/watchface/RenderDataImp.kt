@@ -8,6 +8,7 @@ import com.shishkin.luxuriouswatchface.data.usersstyles.CustomData
 import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
 import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.ui.util.fromDimension
+import com.shishkin.luxuriouswatchface.watchface.RenderData.*
 
 fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSettings? = null) : RenderData{
 
@@ -53,8 +54,7 @@ private fun createBackgroundImageProvider() : ScaledImageProvider =
 
         val mainLayer = getResourceImage(
             data.context,
-            R.drawable.background_square,
-            R.drawable.background_round
+            R.drawable.background,
         ).scaleImage(data.width / 2, data.height / 2)
 
         createLayeredBitmap(data.width, data.height, colorLayer, testLayer, mainLayer)

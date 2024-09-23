@@ -55,10 +55,10 @@
                 android:resource="@xml/watch_face" />
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview"
-                android:resource="@drawable/preview_square" />
+                android:resource="@drawable/preview" />
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
-                android:resource="@drawable/preview_round" />
+                android:resource="@drawable/preview" />
             <meta-data
                 android:name="android.service.wallpaper.square_mode"
                 android:value="false" />

@@ -23,72 +23,76 @@ data class RenderData(
                 val canvas = data.canvas
 
                 backgroundImageProvider.init(
-                    ImageProviderData(context,
+                    ImageProviderData(
+                        context,
                         canvas.width,
-                        canvas.height))
+                        canvas.height
+                    )
+                )
                 hourHandData.init(context, data)
 
                 isInit = true
             }
         }
     }
-}
 
-data class RenderDataInit(
-    val canvas: Canvas
-)
-
-open class ScaledImageProvider(val imageProvider: (ImageProviderData) -> Bitmap){
-
-    private lateinit var image: Bitmap
-
-    fun init(data: ImageProviderData) {
-        image = imageProvider(data).scaleImage(data.width, data.height)
-    }
-
-    operator fun invoke() = image
-}
-
-data class ImageProviderData(
-    val context: Context,
-    val width: Int,
-    val height: Int,
-)
-
-class ScaledResourceImageProvider(private val resourceId: Int, private val roundResourceId: Int? = null):
-    ScaledImageProvider(
-        { data ->
-            getResourceImage(data.context, resourceId, roundResourceId)
-        }
+    data class RenderDataInit(
+        val canvas: Canvas
     )
 
-data class HandData(
-    val imageProvider: ScaledResourceImageProvider,
-    val widthPercent: Int,
-    val heightPercent: Int
-) {
+    open class ScaledImageProvider(val imageProvider: (ImageProviderData) -> Bitmap){
 
-    var width = 0
-    var height = 0
+        private lateinit var image: Bitmap
 
-    fun init(context: Context, renderDataInit: RenderDataInit) {
-        width =  computeMeasurement(renderDataInit.canvas.width, widthPercent)
-        height = computeMeasurement(renderDataInit.canvas.height, heightPercent)
+        fun init(data: ImageProviderData) {
+            image = imageProvider(data).scaleImage(data.width, data.height)
+        }
 
-        imageProvider.init(
-            ImageProviderData(context,
-                width,
-                height))
+        operator fun invoke() = image
     }
 
-    private fun computeMeasurement(measurement : Int, percent: Int): Int =
-        ((measurement * percent).toFloat() / 100).roundToInt()
+    data class ImageProviderData(
+        val context: Context,
+        val width: Int,
+        val height: Int,
+    )
+
+    class ScaledResourceImageProvider(private val resourceId: Int, private val roundResourceId: Int? = null):
+        ScaledImageProvider(
+            { data ->
+                getResourceImage(data.context, resourceId, roundResourceId)
+            }
+        )
+
+    data class HandData(
+        val imageProvider: ScaledResourceImageProvider,
+        val widthPercent: Int,
+        val heightPercent: Int
+    ) {
+
+        var width = 0
+        var height = 0
+
+        fun init(context: Context, renderDataInit: RenderDataInit) {
+            width =  computeMeasurement(renderDataInit.canvas.width, widthPercent)
+            height = computeMeasurement(renderDataInit.canvas.height, heightPercent)
+
+            imageProvider.init(
+                ImageProviderData(context,
+                    width,
+                    height))
+        }
+
+        private fun computeMeasurement(measurement : Int, percent: Int): Int =
+            ((measurement * percent).toFloat() / 100).roundToInt()
+    }
+
+    data class TextData(
+        val text: String,
+        val textSize: Float,
+        val yCenterOffset: Int,
+        val font: Typeface,
+        val color: Int
+    )
 }
 
-data class TextData(
-    val text: String,
-    val textSize: Float,
-    val yCenterOffset: Int,
-    val font: Typeface,
-    val color: Int
-)

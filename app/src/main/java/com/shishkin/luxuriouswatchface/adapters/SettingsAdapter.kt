@@ -2,7 +2,6 @@ package com.shishkin.luxuriouswatchface.adapters
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
@@ -28,14 +27,9 @@ import javax.inject.Inject
 class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsData>) :
     ModelAdapter<SettingsData>(itemCallback) {
 
-//    lateinit var title: SettingsTitle
-
-//    lateinit var settingsEditor: SettingsEditor
-
     lateinit var viewModel: SettingsViewModel
 
     lateinit var scope: CoroutineScope
-//    val textsFlows = HashMap<String, Flow<String>>()
 
     companion object {
         const val TITLE = 0
@@ -43,7 +37,6 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         const val EDIT_TEXT = 2
         const val FOOTER = 3
 
-        //        const val ITEM_PADDING = 1
         const val TEXT_SAVING_DELAY = 500L
     }
 
@@ -58,16 +51,6 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
 
     override fun getItemViewType(position: Int): Int =
         getItem(position)!!.type
-//    {
-//        val res = if (position == 0) TITLE else getItem(position - ITEM_PADDING)!!.type
-//        Log.e("colorsPick", "getItemViewType = ${res}")
-//        return res
-//    }
-
-//    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-//        Log.e("settingsIdFlow", "adapterPosition = ${holder.adapterPosition}")
-//        super.onViewRecycled(holder)
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
@@ -91,19 +74,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
             else -> super.onCreateViewHolder(parent, viewType)
         }
 
-//    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-////        Log.e("colorsPick", "onBindViewHolder position $position")
-//        super.onBindViewHolder(viewHolder, position - ITEM_PADDING)
-//    }
-
-//    override fun getItemCount(): Int {
-//        Log.e("colorsPick", "getItemCount count is ${super.getItemCount() + ITEM_PADDING}")
-//        return super.getItemCount() + ITEM_PADDING
-//    }
-
     private fun setUpTextWithImage(dataModel: SettingsData, binding: SettingsTextWithImageBinding) {
-        Log.e("qwe", "setUpData title = ${dataModel.title}")
-
         val model = dataModel.toSettingsTextWithImage()
         binding.model = model
 
@@ -135,22 +106,15 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         binding.model = model.toSettingsEditText()
 
         val id = model.id
-//        textsFlows[id]
 
         callbackFlow {
             object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    Log.e("textsFlows", "beforeTextChanged p0 - $p0 p1 - $p1 p2 - $p2 p3 - $p3")
-                }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    Log.e("textsFlows", "onTextChanged p0 - $p0 p1 - $p1 p2 - $p2 p3 - $p3")
-                }
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                 override fun afterTextChanged(v: Editable?) {
-                    Log.e("textsFlows", "afterTextChanged $v")
                     if (binding.editor.hasFocus()) {
-                        Log.e("textsFlows", "afterTextChanged trySend - $v")
                         trySend(v.toString())
                     }
                 }
@@ -159,31 +123,12 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
                 awaitClose { binding.editor.removeTextChangedListener(it) }
             }
         }.debounce(TEXT_SAVING_DELAY).also {
-
-//            binding.editor.addTextChangedListener(qwe)
-
             scope.launch {
                 it.collect { text ->
-                    Log.e("customData", " callbackFlow collectLatest id - $id text - $text")
                     viewModel.saveTextSetting(id, text)
                 }
             }
         }
-
-
-//        binding.editor.setOnEditorActionListener { textView, i, _ ->
-//            Log.e("customData", "setOnEditorActionListener i = $i")
-//            if(i == EditorInfo.IME_ACTION_DONE) {
-//                Log.e("customData", "done button textView.text = ${textView.text}")
-//                settingsEditor.set(id, textView.text.toString())
-//            }
-//
-//            return@setOnEditorActionListener false
-//        }
-
-//        binding.editor.setOnFocusChangeListener{ view, hasFocus ->
-//            Log.e("customData", "OnFocusChangeListener model.id = ${model.id} hasFocus = ${hasFocus}")
-//        }
     }
 
     private fun createColorPickerListener(settingsId: String) = View.OnClickListener { v ->

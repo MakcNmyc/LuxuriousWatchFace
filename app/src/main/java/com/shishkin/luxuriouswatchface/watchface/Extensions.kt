@@ -14,7 +14,7 @@ fun Canvas.drawBitmap(bitmap: Bitmap){
     )
 }
 
-fun createLayeredBitmap(width: Int, height: Int, vararg layers: Bitmap) =
+fun createLayeredBitmap(width: Int, height: Int, vararg layers: Bitmap): Bitmap =
     Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565).also {
         val c = Canvas(it)
         for(layer in layers){
@@ -22,7 +22,7 @@ fun createLayeredBitmap(width: Int, height: Int, vararg layers: Bitmap) =
         }
     }
 
-fun createColorBitmap(width: Int, height: Int, color: Int) =
+fun createColorBitmap(width: Int, height: Int, color: Int): Bitmap =
     Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565).also {
         Canvas(it).drawColor(color)
     }
@@ -42,11 +42,3 @@ fun Bitmap.scaleImage(width: Int, height: Int): Bitmap = Bitmap.createScaledBitm
         height,
         true
 )
-
-
-//fun createBitmapWithBackgroundColor(bitmap: Bitmap, backgroundColor: Int, width: Int, height: Int) =
-//    Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565).also {
-//        val c = Canvas(it)
-//        c.drawColor(backgroundColor)
-//        c.drawBitmap(bitmap, 0F, 0F, null)
-//    }
