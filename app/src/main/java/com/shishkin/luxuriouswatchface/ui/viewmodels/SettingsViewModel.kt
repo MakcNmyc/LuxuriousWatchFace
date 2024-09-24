@@ -36,8 +36,8 @@ class SettingsViewModel @Inject constructor(@ApplicationContext val context: Con
         SettingsAdapter.FOOTER,
     )
 
-    private var _settingsData: MutableStateFlow<PagingData<SettingsData>?> = MutableStateFlow(null)
-    var settingsData = _settingsData.asStateFlow()
+    private val _settingsData: MutableStateFlow<PagingData<SettingsData>?> = MutableStateFlow(null)
+    val settingsData = _settingsData.asStateFlow()
 
     fun initSettingsSession(activity: ComponentActivity){
         settingsRepository.initSession(activity)
@@ -70,7 +70,6 @@ class SettingsViewModel @Inject constructor(@ApplicationContext val context: Con
     companion object {
         const val TITLE_ID = "settingsTitle"
         const val FOOTER_ID = "footerId"
-        const val SETTINGS_ID_NOT_SET = ""
     }
 
 }

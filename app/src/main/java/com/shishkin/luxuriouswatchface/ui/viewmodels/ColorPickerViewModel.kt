@@ -38,14 +38,7 @@ class ColorPickerViewModel @Inject constructor(savedStateHandle: SavedStateHandl
             _colorsData.value = dataProducer(context)
     }
 
-    fun saveToSetting(value: Int) : Boolean{
-        settingsId.value.let {
-            if(it == SettingsRepository.SETTINGS_ID_NOT_SET) return false
-            settingsRepository.setSetting(it, value)
-        }
-
-        return true
-    }
+    fun saveToSetting(value: Int) = settingsRepository.saveToSetting(settingsId, value)
 
     companion object{
         const val SETTINGS_ID_ARGUMENT_NAME = "settingsId"

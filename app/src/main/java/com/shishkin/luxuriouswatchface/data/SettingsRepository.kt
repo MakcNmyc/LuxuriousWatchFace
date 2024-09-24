@@ -11,6 +11,7 @@ import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.models.SettingsData
 import com.shishkin.luxuriouswatchface.ui.util.toId
 import com.shishkin.luxuriouswatchface.ui.util.toInt
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -78,4 +79,16 @@ import javax.inject.Singleton
             )
         } ?: arrayListOf()
 
+    fun saveToSetting(settingsId : StateFlow<String>, value: Int) : Boolean{
+        settingsId.value.let {
+            if(it == SettingsRepository.SETTINGS_ID_NOT_SET) return false
+            setSetting(it, value)
+        }
+
+        return true
+    }
+
+    companion object{
+        const val SETTINGS_ID_NOT_SET = ""
+    }
 }
