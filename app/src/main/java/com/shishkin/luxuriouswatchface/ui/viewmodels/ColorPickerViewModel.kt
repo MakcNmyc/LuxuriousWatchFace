@@ -4,19 +4,17 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
-import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.data.ColorPickerRepository
 import com.shishkin.luxuriouswatchface.data.SettingsRepository
 import com.shishkin.luxuriouswatchface.models.ColorPickElement
 import com.shishkin.luxuriouswatchface.ui.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ColorPickerViewModel @Inject constructor(@ApplicationContext context: Context, savedStateHandle: SavedStateHandle) : ViewModel() {
+class ColorPickerViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     @Inject
     lateinit var colorsPickerRepository: ColorPickerRepository
@@ -24,7 +22,7 @@ class ColorPickerViewModel @Inject constructor(@ApplicationContext context: Cont
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
-    val settingsId = savedStateHandle.getStateFlow(context.getString(R.string.settings_id_argument), "")
+    val settingsId = savedStateHandle.getStateFlow(SETTINGS_ID_ARGUMENT_NAME, "")
 
     private var _colorsData: MutableStateFlow<PagingData<ColorPickElement>?> = MutableStateFlow(null)
     var colorsData = _colorsData.asStateFlow()
@@ -40,4 +38,9 @@ class ColorPickerViewModel @Inject constructor(@ApplicationContext context: Cont
     fun saveToSetting(id: String, value: Int){
         settingsRepository.setSetting(id, value)
     }
+
+    companion object{
+        const val SETTINGS_ID_ARGUMENT_NAME = "settingsId"
+    }
+
 }
