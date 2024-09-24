@@ -22,21 +22,29 @@ class ColorPickerViewModel @Inject constructor(savedStateHandle: SavedStateHandl
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
-    val settingsId = savedStateHandle.getStateFlow(SETTINGS_ID_ARGUMENT_NAME, "")
+    private val settingsId = savedStateHandle.getStateFlow(SETTINGS_ID_ARGUMENT_NAME, SettingsRepository.SETTINGS_ID_NOT_SET)
 
-    private var _colorsData: MutableStateFlow<PagingData<ColorPickElement>?> = MutableStateFlow(null)
-    var colorsData = _colorsData.asStateFlow()
+    private val _colorsData: MutableStateFlow<PagingData<ColorPickElement>?> = MutableStateFlow(null)
+    val colorsData = _colorsData.asStateFlow()
 
-    fun initColorsData(context: Context){
-        if(_colorsData.value == null)
-            _colorsData.value = createPagedData(context)
+    fun initBackgroundColorsData(context: Context){
+        initColorsData(context){
+            colorsPickerRepository.getBackGroundsColors(context).toPagingData()
+        }
     }
 
-    private fun createPagedData(context: Context) =
-        colorsPickerRepository.getBackGroundsColors(context).toPagingData()
+    private inline fun initColorsData(context: Context, dataProducer: (Context) -> PagingData<ColorPickElement>){
+        if(_colorsData.value == null)
+            _colorsData.value = dataProducer(context)
+    }
 
-    fun saveToSetting(id: String, value: Int){
-        settingsRepository.setSetting(id, value)
+    fun saveToSetting(value: Int) : Boolean{
+        settingsId.value.let {
+            if(it == SettingsRepository.SETTINGS_ID_NOT_SET) return false
+            settingsRepository.setSetting(it, value)
+        }
+
+        return true
     }
 
     companion object{
