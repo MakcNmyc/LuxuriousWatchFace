@@ -1,6 +1,6 @@
 package com.shishkin.luxuriouswatchface.models
 
-data class ColorsElement(
+data class ColorElement(
     override val id: Int,
 ) : ListElementModel<Int> {
     val color: Int

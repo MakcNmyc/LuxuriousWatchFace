@@ -2,23 +2,23 @@ package com.shishkin.luxuriouswatchface.data
 
 import android.content.Context
 import android.graphics.Color
-import com.shishkin.luxuriouswatchface.models.ColorsElement
+import com.shishkin.luxuriouswatchface.models.ColorElement
 import javax.inject.Inject
 
 class ColorPickerRepository @Inject constructor() {
 
-    fun getBackGroundsColors(context: Context) : List<ColorsElement>{
+    fun getBackGroundsColors(context: Context) : List<ColorElement>{
         return arrayListOf(
-            ColorsElement(
+            ColorElement(
                 Color.RED,
             ),
-            ColorsElement(
+            ColorElement(
                 Color.BLUE,
             ),
-            ColorsElement(
+            ColorElement(
                 Color.GREEN,
             ),
-            ColorsElement(
+            ColorElement(
                 Color.YELLOW,
             ),
         )
