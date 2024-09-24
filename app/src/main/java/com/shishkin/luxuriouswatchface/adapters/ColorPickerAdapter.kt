@@ -5,13 +5,13 @@ import androidx.navigation.Navigation
 import com.shishkin.luxuriouswatchface.databinding.ColorsElementBinding
 import com.shishkin.luxuriouswatchface.models.ColorsElement
 import com.shishkin.luxuriouswatchface.ui.util.ColorImageCreator
-import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorsPickerViewModel
+import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorPickerViewModel
 import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import javax.inject.Inject
 
-class ColorsPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsElement>)  : ModelAdapter<ColorsElement> (itemCallback)  {
+class ColorPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorsElement>)  : ModelAdapter<ColorsElement> (itemCallback)  {
 
-    lateinit var viewModel: ColorsPickerViewModel
+    lateinit var viewModel: ColorPickerViewModel
 
     var settingsId = SettingsViewModel.SETTINGS_ID_NOT_SET
 

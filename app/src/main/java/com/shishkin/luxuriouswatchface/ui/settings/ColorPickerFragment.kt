@@ -8,22 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.shishkin.luxuriouswatchface.adapters.ColorsPickerAdapter
+import com.shishkin.luxuriouswatchface.adapters.ColorPickerAdapter
 import com.shishkin.luxuriouswatchface.databinding.ColorsListBinding
 import com.shishkin.luxuriouswatchface.ui.util.createBinding
 import com.shishkin.luxuriouswatchface.ui.util.setUpBaseList
-import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorsPickerViewModel
+import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorPickerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ColorsPickerFragment : Fragment() {
+class ColorPickerFragment : Fragment() {
 
     @Inject
-    lateinit var adapter: ColorsPickerAdapter
-    private val viewModel: ColorsPickerViewModel by viewModels()
+    lateinit var adapter: ColorPickerAdapter
+    private val viewModel: ColorPickerViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

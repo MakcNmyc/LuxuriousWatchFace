@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
 import com.shishkin.luxuriouswatchface.R
-import com.shishkin.luxuriouswatchface.data.ColorsPickerRepository
+import com.shishkin.luxuriouswatchface.data.ColorPickerRepository
 import com.shishkin.luxuriouswatchface.data.SettingsRepository
 import com.shishkin.luxuriouswatchface.models.ColorsElement
 import com.shishkin.luxuriouswatchface.ui.util.toPagingData
@@ -16,10 +16,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ColorsPickerViewModel @Inject constructor(@ApplicationContext context: Context, savedStateHandle: SavedStateHandle) : ViewModel() {
+class ColorPickerViewModel @Inject constructor(@ApplicationContext context: Context, savedStateHandle: SavedStateHandle) : ViewModel() {
 
     @Inject
-    lateinit var colorsPickerRepository: ColorsPickerRepository
+    lateinit var colorsPickerRepository: ColorPickerRepository
 
     @Inject
     lateinit var settingsRepository: SettingsRepository

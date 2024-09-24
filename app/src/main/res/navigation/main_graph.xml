@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/colorsPickerFragment"
-        android:name="com.shishkin.luxuriouswatchface.ui.settings.ColorsPickerFragment"
+        android:name="com.shishkin.luxuriouswatchface.ui.settings.ColorPickerFragment"
         android:label="ColorsPickerFragment" >
         <argument
             android:name="settingsId"

@@ -5,7 +5,7 @@ import android.graphics.Color
 import com.shishkin.luxuriouswatchface.models.ColorsElement
 import javax.inject.Inject
 
-class ColorsPickerRepository @Inject constructor() {
+class ColorPickerRepository @Inject constructor() {
 
     fun getBackGroundsColors(context: Context) : List<ColorsElement>{
         return arrayListOf(
