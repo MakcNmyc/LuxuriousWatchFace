@@ -6,7 +6,6 @@
     <string name="settings_top_text">Top text</string>
     <string name="settings_text_edit_hint">Enter text here</string>
 
-    <string name="settings_id_argument">settingsId</string>
     <string name="settings_changes_argument">settingsChanges</string>
 
     <string name="setting_background_color_name">Background color</string>
