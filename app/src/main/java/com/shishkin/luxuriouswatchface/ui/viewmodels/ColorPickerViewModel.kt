@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.data.ColorPickerRepository
 import com.shishkin.luxuriouswatchface.data.SettingsRepository
-import com.shishkin.luxuriouswatchface.models.ColorElement
+import com.shishkin.luxuriouswatchface.models.ColorPickElement
 import com.shishkin.luxuriouswatchface.ui.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,7 +26,7 @@ class ColorPickerViewModel @Inject constructor(@ApplicationContext context: Cont
 
     val settingsId = savedStateHandle.getStateFlow(context.getString(R.string.settings_id_argument), "")
 
-    private var _colorsData: MutableStateFlow<PagingData<ColorElement>?> = MutableStateFlow(null)
+    private var _colorsData: MutableStateFlow<PagingData<ColorPickElement>?> = MutableStateFlow(null)
     var colorsData = _colorsData.asStateFlow()
 
     fun initColorsData(context: Context){

@@ -3,19 +3,19 @@ package com.shishkin.luxuriouswatchface.adapters
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.shishkin.luxuriouswatchface.databinding.ColorsElementBinding
-import com.shishkin.luxuriouswatchface.models.ColorElement
+import com.shishkin.luxuriouswatchface.models.ColorPickElement
 import com.shishkin.luxuriouswatchface.ui.util.ColorImageCreator
 import com.shishkin.luxuriouswatchface.ui.viewmodels.ColorPickerViewModel
 import com.shishkin.luxuriouswatchface.ui.viewmodels.SettingsViewModel
 import javax.inject.Inject
 
-class ColorPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorElement>)  : ModelAdapter<ColorElement> (itemCallback)  {
+class ColorPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorPickElement>)  : ModelAdapter<ColorPickElement> (itemCallback)  {
 
     lateinit var viewModel: ColorPickerViewModel
 
     var settingsId = SettingsViewModel.SETTINGS_ID_NOT_SET
 
-    override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<ColorElement, ColorsElementBinding> =
+    override val vhProducer: (parent: ViewGroup) -> ModelViewHolder<ColorPickElement, ColorsElementBinding> =
         { parent ->
             ModelViewHolder(
                 parent,
@@ -24,7 +24,7 @@ class ColorPickerAdapter @Inject constructor(itemCallback: ItemCallback<ColorEle
             )
         }
 
-    private fun setUpData(model: ColorElement, binding: ColorsElementBinding) {
+    private fun setUpData(model: ColorPickElement, binding: ColorsElementBinding) {
 
         binding.color.setOnClickListener{
             if(settingsId == SettingsViewModel.SETTINGS_ID_NOT_SET) return@setOnClickListener
