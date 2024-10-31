@@ -90,6 +90,7 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         model.clickListenerType?.let { type ->
             when (type) {
                 ClickListenerTypes.COLOR_PICK_LISTENER -> createColorPickerListener(model.id)
+                ClickListenerTypes.IMAGE_PICK_LISTENER -> createImagePickerListener(model.id)
             }.let { listener ->
                 binding.root.setOnClickListener(listener)
             }
@@ -137,8 +138,15 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         )
     }
 
+    private fun createImagePickerListener(settingsId: String) = View.OnClickListener { v ->
+        Navigation.findNavController(v).navigate(
+            SettingsFragmentDirections.actionSettingsToImagePicker(settingsId)
+        )
+    }
+
     enum class ClickListenerTypes {
-        COLOR_PICK_LISTENER
+        COLOR_PICK_LISTENER,
+        IMAGE_PICK_LISTENER
     }
 
 }

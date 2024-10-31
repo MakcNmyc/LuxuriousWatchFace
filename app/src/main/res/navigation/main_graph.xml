@@ -11,16 +11,27 @@
         <action
             android:id="@+id/action_settings_to_colorsPicker"
             app:destination="@id/colorsPickerFragment" />
+        <action
+            android:id="@+id/action_settings_to_imagePicker"
+            app:destination="@id/colorsPickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/colorsPickerFragment"
         android:name="com.shishkin.luxuriouswatchface.ui.settings.ColorPickerFragment"
-        android:label="ColorsPickerFragment" >
+        android:label="ColorPickerFragment" >
         <argument
             android:name="settingsId"
             app:argType="string" />
         <action
             android:id="@+id/action_colorsPicker_to_settings"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imagePickerFragment"
+        android:name="com.shishkin.luxuriouswatchface.ui.settings.ImagePickerFragment"
+        android:label="ImagePickerFragment" >
+        <action
+            android:id="@+id/action_imagePicker_to_settings"
             app:destination="@id/settingsFragment" />
     </fragment>
 </navigation>

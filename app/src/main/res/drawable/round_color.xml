@@ -9,6 +9,6 @@
         android:color="#eeeeee" />
 
     <size
-        android:width="@dimen/round_color_width"
-        android:height="@dimen/round_color_height" />
+        android:width="@dimen/settings_text_with_image_width"
+        android:height="@dimen/settings_text_with_image_height" />
 </shape>

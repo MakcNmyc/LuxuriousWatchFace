@@ -26,6 +26,13 @@ class SettingsSchema @Inject constructor() {
         Color.BLUE
     )
 
+    val backgroundImage = UserStyleSettingDescription(
+        UserSettings::backgroundImage,
+        R.string.setting_background_image,
+        R.string.setting_background_image_description,
+        R.drawable.background
+    )
+
     val customData = UserStyleSettingDescription(
         UserSettings::customData,
         R.string.setting_custom_data_name,

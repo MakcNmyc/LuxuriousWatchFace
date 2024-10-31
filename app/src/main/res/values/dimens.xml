@@ -5,14 +5,19 @@
     <dimen name="settings_elements_distance">8dp</dimen>
     <dimen name="recycler_top_padding">24dp</dimen>
     <dimen name="recycler_bottom_padding">36dp</dimen>
-    <dimen name="round_color_width">38dp</dimen>
-    <dimen name="round_color_height">38dp</dimen>
+
     <dimen name="colors_element_width">46dp</dimen>
     <dimen name="colors_element_height">46dp</dimen>
     <dimen name="colors_element_padding">3dp</dimen>
+    <dimen name="image_picker_element_width">46dp</dimen>
+    <dimen name="image_picker_element_height">46dp</dimen>
+    <dimen name="image_picker_element_padding">3dp</dimen>
 
     <dimen name="top_text_size">32sp</dimen>
     <dimen name="top_y_offset">-16dp</dimen>
     <dimen name="bottom_text_size">16sp</dimen>
+
+    <dimen name="settings_text_with_image_width">38dp</dimen>
+    <dimen name="settings_text_with_image_height">38dp</dimen>
 
 </resources>

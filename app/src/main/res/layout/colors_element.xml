@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:id="@+id/color"
-        android:layout_width="@dimen/colors_element_width"
-        android:layout_height="@dimen/colors_element_height"
+        android:layout_width="@dimen/image_picker_element_width"
+        android:layout_height="@dimen/image_picker_element_height"
         android:layout_gravity="center"
-        android:padding="@dimen/colors_element_padding"/>
+        android:padding="@dimen/image_picker_element_padding"/>
 </layout>

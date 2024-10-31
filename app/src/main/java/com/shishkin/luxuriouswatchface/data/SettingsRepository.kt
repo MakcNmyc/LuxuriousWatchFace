@@ -76,6 +76,13 @@ import javax.inject.Singleton
                     title = context.resources.getString(R.string.setting_bottom_text_name),
                     text = settings.customData.bottomText,
                 ),
+                SettingsData(
+                    id =  UserSettings::backgroundImage.toId(),
+                    type = SettingsAdapter.TEXT_WITH_IMAGE,
+                    title = context.resources.getString(R.string.setting_background_image),
+                    imageResource = settings.backgroundImage,
+                    clickListenerType = SettingsAdapter.ClickListenerTypes.IMAGE_PICK_LISTENER.toInt()
+                ),
             )
         } ?: arrayListOf()
 

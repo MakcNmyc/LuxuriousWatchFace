@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
-import com.shishkin.luxuriouswatchface.data.ColorPickerRepository
+import com.shishkin.luxuriouswatchface.data.ImagePickerRepository
 import com.shishkin.luxuriouswatchface.data.SettingsRepository
-import com.shishkin.luxuriouswatchface.models.ColorPickElement
+import com.shishkin.luxuriouswatchface.models.ImagePickElement
 import com.shishkin.luxuriouswatchface.ui.util.toPagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,28 +14,28 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ColorPickerViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
+class ImagePickerViewModel @Inject constructor(savedStateHandle: SavedStateHandle): ViewModel(){
 
     @Inject
-    lateinit var colorsPickerRepository: ColorPickerRepository
+    lateinit var imagePickerRepository: ImagePickerRepository
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
     private val settingsId = savedStateHandle.getStateFlow(SETTINGS_ID_ARGUMENT_NAME, SettingsRepository.SETTINGS_ID_NOT_SET)
 
-    private val _colorsData: MutableStateFlow<PagingData<ColorPickElement>?> = MutableStateFlow(null)
-    val colorsData = _colorsData.asStateFlow()
+    private val _imagesData: MutableStateFlow<PagingData<ImagePickElement>?> = MutableStateFlow(null)
+    val imagesData = _imagesData.asStateFlow()
 
-    fun initBackgroundColorsData(context: Context){
-        initColorsData(context){
-            colorsPickerRepository.getBackGroundsColors(context).toPagingData()
+    fun initBackgroundImagesData(context: Context){
+        initImagesData(context) {
+            imagePickerRepository.getBackgroundImages(context).toPagingData()
         }
     }
 
-    private inline fun initColorsData(context: Context, dataProducer: (Context) -> PagingData<ColorPickElement>){
-        if(_colorsData.value == null)
-            _colorsData.value = dataProducer(context)
+    private inline fun initImagesData(context: Context, dataProducer: (Context) -> PagingData<ImagePickElement>){
+        if(_imagesData.value == null)
+            _imagesData.value = dataProducer(context)
     }
 
     fun saveToSetting(value: Int) = settingsRepository.saveToSetting(settingsId, value)

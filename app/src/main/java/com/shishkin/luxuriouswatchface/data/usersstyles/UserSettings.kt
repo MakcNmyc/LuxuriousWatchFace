@@ -12,6 +12,7 @@ import kotlin.reflect.KProperty1
 data class UserSettings (
     var backgroundColor: Int,
     var accessoriesColor: Int,
+    var backgroundImage: Int,
     //only one allow
     var customData: CustomData,
 )
@@ -40,6 +41,7 @@ fun UserStyle.toUserSettings() : UserSettings{
         backgroundColor = UserSettings::backgroundColor.optionValue(settingsMap),
         accessoriesColor = UserSettings::accessoriesColor.optionValue(settingsMap),
         customData = UserSettings::customData.optionValue(settingsMap),
+        backgroundImage = UserSettings::backgroundImage.optionValue(settingsMap),
     )
 }
 
