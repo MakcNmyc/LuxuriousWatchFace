@@ -13,7 +13,7 @@
             app:destination="@id/colorsPickerFragment" />
         <action
             android:id="@+id/action_settings_to_imagePicker"
-            app:destination="@id/colorsPickerFragment" />
+            app:destination="@id/imagePickerFragment" />
     </fragment>
     <fragment
         android:id="@+id/colorsPickerFragment"
@@ -30,6 +30,9 @@
         android:id="@+id/imagePickerFragment"
         android:name="com.shishkin.luxuriouswatchface.ui.settings.ImagePickerFragment"
         android:label="ImagePickerFragment" >
+        <argument
+            android:name="settingsId"
+            app:argType="string" />
         <action
             android:id="@+id/action_imagePicker_to_settings"
             app:destination="@id/settingsFragment" />

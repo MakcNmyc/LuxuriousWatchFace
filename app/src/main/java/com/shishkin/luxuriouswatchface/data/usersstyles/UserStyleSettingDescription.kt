@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
+// Store description
 class UserStyleSettingDescription<V : Any>(
     val property: KProperty1<UserSettings, V>,
     @StringRes val displayNameResourceId: Int,

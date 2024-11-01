@@ -30,14 +30,14 @@ class SettingsSchema @Inject constructor() {
         UserSettings::backgroundImage,
         R.string.setting_background_image,
         R.string.setting_background_image_description,
-        R.drawable.background
+        DEFAULT_BACKGROUND_IMAGE
     )
 
     val customData = UserStyleSettingDescription(
         UserSettings::customData,
         R.string.setting_custom_data_name,
         R.string.setting_custom_data_description,
-        CustomData()
+        CustomData(DEFAULT_TOP_TEXT, DEFAULT_BOTTOM_TEXT)
     )
 
     fun createUserStyleSchema(resources: Resources): UserStyleSchema {
@@ -54,5 +54,27 @@ class SettingsSchema @Inject constructor() {
     }
 
     private class NotEqualsSettingsPropertiesException : Exception("All properties in ${UserSettings::class.simpleName} class should have description in ${SettingsSchema::class.simpleName} class")
+
+    // There store default settings
+    companion object{
+        val DEFAULT_BACKGROUND_IMAGE = R.drawable.silver_background
+
+        const val DEFAULT_TOP_TEXT = ""
+        const val DEFAULT_BOTTOM_TEXT = ""
+
+        fun createDefaultUserSettings() =
+            UserSettings(
+                Color.BLACK,
+                Color.BLUE,
+                R.drawable.gold_background,
+                createDefaultCustomData(),
+            )
+
+        private fun createDefaultCustomData() =
+            CustomData(
+                DEFAULT_TOP_TEXT,
+                DEFAULT_BOTTOM_TEXT,
+            )
+    }
 
 }

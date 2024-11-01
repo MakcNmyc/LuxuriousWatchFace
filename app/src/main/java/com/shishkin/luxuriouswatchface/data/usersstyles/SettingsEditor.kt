@@ -54,8 +54,8 @@ class SettingsEditor @Inject constructor() {
     }
 
     fun <V : Any> set(id: String, value: V) {
-        doWhenReady{
-            value.toCustomData(id){settingsHolder.settings.value!!.customData.copy()}?.let {
+        doWhenReady {
+            value.toCustomData(id) { settingsHolder.settings.value!!.customData.copy() }?.let {
                 set(CUSTOM_DATA_ID, it.toOption())
             } ?: set(id, value.toOption())
         }

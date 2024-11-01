@@ -13,7 +13,7 @@ data class UserSettings (
     var backgroundColor: Int,
     var accessoriesColor: Int,
     var backgroundImage: Int,
-    //only one allow
+    //only one custom type allow
     var customData: CustomData,
 )
 
@@ -21,14 +21,9 @@ data class UserSettings (
 @Serializable
 data class CustomData(
     //max length = R.string.watchface_max_string_size
-    var topText: String = DEFAULT_TOP_TEXT,
-    var bottomText: String = DEFAULT_BOTTOM_TEXT,
-){
-    companion object{
-        const val DEFAULT_TOP_TEXT = ""
-        const val DEFAULT_BOTTOM_TEXT = ""
-    }
-}
+    var topText: String = "",
+    var bottomText: String = "",
+)
 
 fun UserStyle.toUserSettings() : UserSettings{
 

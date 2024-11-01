@@ -1,6 +1,7 @@
 package com.shishkin.luxuriouswatchface.data
 
 import android.content.Context
+import android.util.Log
 import androidx.activity.ComponentActivity
 import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.adapters.SettingsAdapter
@@ -87,6 +88,7 @@ import javax.inject.Singleton
         } ?: arrayListOf()
 
     fun saveToSetting(settingsId : StateFlow<String>, value: Int) : Boolean{
+        Log.e("PICK_LISTENER", "saveToSetting settingsId.value = ${settingsId.value}, value = $value")
         settingsId.value.let {
             if(it == SettingsRepository.SETTINGS_ID_NOT_SET) return false
             setSetting(it, value)

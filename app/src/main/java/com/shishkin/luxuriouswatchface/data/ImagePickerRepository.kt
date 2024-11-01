@@ -10,20 +10,19 @@ class ImagePickerRepository @Inject constructor(){
     fun getBackgroundImages(context: Context) =
         arrayListOf(
             ImagePickElement(
-                R.drawable.red_ring,
-                R.drawable.red_ring,
+                R.drawable.silver_background,
             ),
             ImagePickElement(
-                R.drawable.background,
-                R.drawable.background,
+                R.drawable.gold_background,
             ),
             ImagePickElement(
-                R.drawable.preview,
-                R.drawable.preview,
+                R.drawable.blue_background,
             ),
             ImagePickElement(
-                R.drawable.splash_icon,
-                R.drawable.splash_icon,
+                R.drawable.green_background,
+            ),
+            ImagePickElement(
+                R.drawable.purple_background,
             ),
         )
 }
