@@ -32,7 +32,7 @@ class ColorPickerFragment : Fragment() {
                 viewModel.initBackgroundColorsData(requireContext())
                 adapter.viewModel = viewModel
                 setUpBaseList(
-                    binding.settingsList,
+                    binding.colorsList,
                     viewModel.colorsData,
                     adapter,
                     GridLayoutManager(context, ROW_COUNT)

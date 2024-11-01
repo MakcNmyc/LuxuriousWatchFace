@@ -20,4 +20,6 @@
     <dimen name="settings_text_with_image_width">38dp</dimen>
     <dimen name="settings_text_with_image_height">38dp</dimen>
 
+    <dimen name="list_padding">32dp</dimen>
+
 </resources>
