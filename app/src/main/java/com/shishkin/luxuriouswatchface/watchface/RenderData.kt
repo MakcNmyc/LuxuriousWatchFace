@@ -8,9 +8,10 @@ import kotlin.math.roundToInt
 
 data class RenderData(
     val context: Context,
-    val backgroundImageProvider: ScaledImageProvider,
+    val backgroundImageProvider: ImageProvider,
     val hourHandData: HandData,
-    val minuteHandColor: Int,
+    val minuteHandData: HandData,
+    val secondHandData: HandData,
     val topTextData: TextData,
     val bottomTextData: TextData,
 ){
@@ -30,6 +31,8 @@ data class RenderData(
                     )
                 )
                 hourHandData.init(context, data)
+                minuteHandData.init(context, data)
+                secondHandData.init(context, data)
 
                 isInit = true
             }
@@ -40,12 +43,12 @@ data class RenderData(
         val canvas: Canvas
     )
 
-    open class ScaledImageProvider(val imageProvider: (ImageProviderData) -> Bitmap){
+    open class ImageProvider(val imageProvider: (ImageProviderData) -> Bitmap){
 
         private lateinit var image: Bitmap
 
         fun init(data: ImageProviderData) {
-            image = imageProvider(data).scaleImage(data.width, data.height)
+            image = imageProvider(data)
         }
 
         operator fun invoke() = image
@@ -58,24 +61,27 @@ data class RenderData(
     )
 
     class ScaledResourceImageProvider(private val resourceId: Int, private val roundResourceId: Int? = null):
-        ScaledImageProvider(
+        ImageProvider(
             { data ->
-                getResourceImage(data.context, resourceId, roundResourceId)
+                getResourceImage(data.context, resourceId, roundResourceId).scaleImage(data.width, data.height)
             }
         )
 
     data class HandData(
         val imageProvider: ScaledResourceImageProvider,
         val widthPercent: Int,
-        val heightPercent: Int
+        val heightPercent: Int,
+        val heightPaddingPercent: Int = 0
     ) {
 
         var width = 0
         var height = 0
+        var heightPadding = 0
 
         fun init(context: Context, renderDataInit: RenderDataInit) {
-            width =  computeMeasurement(renderDataInit.canvas.width, widthPercent)
-            height = computeMeasurement(renderDataInit.canvas.height, heightPercent)
+            width =  computePercent(renderDataInit.canvas.width, widthPercent)
+            height = computePercent(renderDataInit.canvas.height, heightPercent)
+            heightPadding = computePercent(height, heightPaddingPercent)
 
             imageProvider.init(
                 ImageProviderData(context,
@@ -83,7 +89,7 @@ data class RenderData(
                     height))
         }
 
-        private fun computeMeasurement(measurement : Int, percent: Int): Int =
+        private fun computePercent(measurement : Int, percent: Int): Int =
             ((measurement * percent).toFloat() / 100).roundToInt()
     }
 

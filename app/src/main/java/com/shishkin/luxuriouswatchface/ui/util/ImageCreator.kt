@@ -8,7 +8,6 @@ import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.watchface.getResourceImage
-import com.shishkin.luxuriouswatchface.watchface.scaleImage
 
 interface ImageCreator {
     fun create(context: Context) : Drawable
@@ -16,14 +15,7 @@ interface ImageCreator {
 
 class ImageResourceCreator(private val  imageId: Int): ImageCreator{
     override fun create(context: Context) =
-        getResourceImage(context, imageId)
-            .scaleImage(
-                context.resources.getDimension(R.dimen.settings_text_with_image_width).toInt(),
-                context.resources.getDimension(R.dimen.settings_text_with_image_height).toInt()
-            )
-            .let {
-                BitmapDrawable(context.resources, it)
-            }
+        BitmapDrawable(context.resources, getResourceImage(context, imageId))
 }
 
 fun Int.toImageResourceCreator() =

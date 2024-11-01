@@ -8,7 +8,7 @@ import com.shishkin.luxuriouswatchface.data.usersstyles.SettingsSchema
 import com.shishkin.luxuriouswatchface.data.usersstyles.UserSettings
 import com.shishkin.luxuriouswatchface.ui.util.fromDimension
 import com.shishkin.luxuriouswatchface.watchface.RenderData.HandData
-import com.shishkin.luxuriouswatchface.watchface.RenderData.ScaledImageProvider
+import com.shishkin.luxuriouswatchface.watchface.RenderData.ImageProvider
 import com.shishkin.luxuriouswatchface.watchface.RenderData.ScaledResourceImageProvider
 import com.shishkin.luxuriouswatchface.watchface.RenderData.TextData
 
@@ -23,12 +23,26 @@ fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSet
         backgroundImageProvider = createBackgroundImageProvider(renderSettings),
         HandData(
             imageProvider = ScaledResourceImageProvider(
-                R.drawable.hour_hand
+                R.drawable.hour_hand_bronze
             ),
-            widthPercent = 10,
+            widthPercent = 5,
             heightPercent = 45
         ),
-        renderSettings.backgroundColor,
+        HandData(
+            imageProvider = ScaledResourceImageProvider(
+                R.drawable.minute_hand_bronze
+            ),
+            widthPercent = 5,
+            heightPercent = 45
+        ),
+        HandData(
+            imageProvider = ScaledResourceImageProvider(
+                R.drawable.second_hand_bronze
+            ),
+            widthPercent = 5,
+            heightPercent = 60,
+            heightPaddingPercent = 20
+        ),
         TextData(
             renderSettings.customData.topText,
             R.dimen.top_text_size.fromDimension(context),
@@ -46,8 +60,8 @@ fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSet
     )
 }
 
-private fun createBackgroundImageProvider(settings: UserSettings) : ScaledImageProvider =
-     ScaledImageProvider{ data ->
+private fun createBackgroundImageProvider(settings: UserSettings) : ImageProvider =
+     ImageProvider{ data ->
         val colorLayer = createColorBitmap(data.width, data.height, Color.BLUE)
             .scaleImage(data.width, data.height)
 

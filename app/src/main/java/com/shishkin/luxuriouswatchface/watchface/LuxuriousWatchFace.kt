@@ -138,11 +138,11 @@ class LuxuriousWatchFace : WatchFaceService() {
                 centerPoint = Point(canvas.width / 2f, canvas.height / 2f),
             )
 
-            drawHand(generalData, renderData.hourHandData, zonedDateTime.minute)
             drawHand(generalData, renderData.hourHandData, zonedDateTime.hour % 12 * 60 + zonedDateTime.minute, true)
+            drawHand(generalData, renderData.minuteHandData, zonedDateTime.minute)
 
             if (drawMode != DrawMode.AMBIENT) {
-                drawHand(generalData, renderData.hourHandData, zonedDateTime.second)
+                drawHand(generalData, renderData.secondHandData, zonedDateTime.second)
             }
         }
 
@@ -161,6 +161,7 @@ class LuxuriousWatchFace : WatchFaceService() {
             val handAngle: Float = (timeValue * (90 / anglePieces.toFloat()))
             val width = handData.width
             val height = handData.height
+            val heightPadding = handData.heightPadding
 
             generalData.canvas.drawBitmap(
                 handData.imageProvider(),
@@ -168,9 +169,9 @@ class LuxuriousWatchFace : WatchFaceService() {
                     setRotate(
                         handAngle,
                         (width / 2).toFloat(),
-                        (height).toFloat()
+                        (height - heightPadding).toFloat()
                     )
-                    postTranslate((generalData.canvas.width/2 - width / 2).toFloat(), (generalData.canvas.height / 2  - height).toFloat())
+                    postTranslate((generalData.canvas.width/2 - width / 2).toFloat(), (generalData.canvas.height / 2  - height + heightPadding).toFloat())
                 },
                 null
             )
