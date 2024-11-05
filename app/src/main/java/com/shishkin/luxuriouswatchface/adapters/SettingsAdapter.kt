@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.shishkin.luxuriouswatchface.R
 import com.shishkin.luxuriouswatchface.databinding.SettingsEditTextBinding
 import com.shishkin.luxuriouswatchface.databinding.SettingsFooterBinding
 import com.shishkin.luxuriouswatchface.databinding.SettingsTextWithImageBinding
@@ -79,11 +80,16 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         val model = dataModel.toSettingsTextWithImage()
         binding.model = model
 
+        Log.e("PICK_LISTENER", "image width is ${binding.root.resources.getDimension(R.dimen.grid_list_element_width)} in int ${binding.root.resources.getDimension(R.dimen.grid_list_element_width).toInt()}")
+
         model.rightImage?.let {
             binding.title.setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
-                it.create(binding.root.context),
+                it.create(binding.root.context,
+                    binding.root.resources.getDimension(R.dimen.settings_text_with_image_width).toInt(),
+                    binding.root.resources.getDimension(R.dimen.settings_text_with_image_height).toInt()
+                ),
                 null
             )
         }

@@ -25,4 +25,7 @@
 
     <string name="setting_custom_data_name">Custom data</string>
     <string name="setting_custom_data_description">Additional data for application customisation</string>
+
+    <string name="setting_indicators_image_name">Indicators</string>
+    <string name="setting_indicators_image_description">Indicators on watchface</string>
 </resources>

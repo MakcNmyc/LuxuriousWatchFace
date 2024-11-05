@@ -16,14 +16,7 @@ class SettingsSchema @Inject constructor() {
         UserSettings::backgroundColor,
         R.string.setting_background_color_name,
         R.string.setting_background_color_description,
-        Color.BLACK
-    )
-
-    val accessoriesColor = UserStyleSettingDescription(
-        UserSettings::accessoriesColor,
-        R.string.setting_accessories_color_name,
-        R.string.setting_accessories_color_description,
-        Color.BLUE
+        DEFAULT_BACKGROUND_COLOR
     )
 
     val backgroundImage = UserStyleSettingDescription(
@@ -31,6 +24,13 @@ class SettingsSchema @Inject constructor() {
         R.string.setting_background_image,
         R.string.setting_background_image_description,
         DEFAULT_BACKGROUND_IMAGE
+    )
+
+    val indicatorsImage = UserStyleSettingDescription(
+        UserSettings::indicatorsImage,
+        R.string.setting_indicators_image_name,
+        R.string.setting_indicators_image_description,
+        DEFAULT_INDICATORS_IMAGE
     )
 
     val customData = UserStyleSettingDescription(
@@ -58,15 +58,17 @@ class SettingsSchema @Inject constructor() {
     // There store default settings
     companion object{
         val DEFAULT_BACKGROUND_IMAGE = R.drawable.silver_background
+        val DEFAULT_INDICATORS_IMAGE = R.drawable.indicators_gold
+        val DEFAULT_BACKGROUND_COLOR = Color.BLACK
 
         const val DEFAULT_TOP_TEXT = ""
         const val DEFAULT_BOTTOM_TEXT = ""
 
         fun createDefaultUserSettings() =
             UserSettings(
-                Color.BLACK,
-                Color.BLUE,
-                R.drawable.gold_background,
+                DEFAULT_BACKGROUND_COLOR,
+                DEFAULT_BACKGROUND_IMAGE,
+                DEFAULT_INDICATORS_IMAGE,
                 createDefaultCustomData(),
             )
 

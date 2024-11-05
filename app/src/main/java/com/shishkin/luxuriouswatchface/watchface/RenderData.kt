@@ -63,7 +63,7 @@ data class RenderData(
     class ScaledResourceImageProvider(private val resourceId: Int, private val roundResourceId: Int? = null):
         ImageProvider(
             { data ->
-                getResourceImage(data.context, resourceId, roundResourceId).scaleImage(data.width, data.height)
+                getBitmapFromResource(data.context, resourceId, roundResourceId).scaleImage(data.width, data.height)
             }
         )
 

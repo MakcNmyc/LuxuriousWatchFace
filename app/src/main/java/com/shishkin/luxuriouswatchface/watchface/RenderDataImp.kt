@@ -16,7 +16,7 @@ fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSet
 
     val renderSettings = settings ?: SettingsSchema.createDefaultUserSettings()
 
-    val font = ResourcesCompat.getFont(context, R.font.afterlife_regular)!!
+    val font = ResourcesCompat.getFont(context, R.font.watchface__uesr_text_font)!!
 
     return RenderData(
         context,
@@ -46,14 +46,14 @@ fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSet
         TextData(
             renderSettings.customData.topText,
             R.dimen.top_text_size.fromDimension(context),
-            R.dimen.top_y_offset.fromDimension(context).toInt(),
+            R.dimen.top_text_y_offset.fromDimension(context).toInt(),
             font,
             Color.BLACK,
         ),
         TextData(
-            renderSettings.customData.topText,
-            R.dimen.top_text_size.fromDimension(context),
-            20,
+            renderSettings.customData.bottomText,
+            R.dimen.bottom_text_size.fromDimension(context),
+            R.dimen.bottom_text_y_offset.fromDimension(context).toInt(),
             font,
             Color.BLACK
         )
@@ -61,16 +61,21 @@ fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSet
 }
 
 private fun createBackgroundImageProvider(settings: UserSettings) : ImageProvider =
-     ImageProvider{ data ->
-        val colorLayer = createColorBitmap(data.width, data.height, Color.BLUE)
+    ImageProvider { data ->
+        val colorLayer = createColorBitmap(data.width, data.height, settings.backgroundColor)
             .scaleImage(data.width, data.height)
 
-        val mainLayer = getResourceImage(
+        val indicatorsLayer = getBitmapFromResource(
+            data.context,
+            settings.indicatorsImage,
+        ).scaleImage(data.width, data.height)
+
+        val mainLayer = getBitmapFromResource(
             data.context,
             settings.backgroundImage,
         ).scaleImage(data.width, data.height)
 
-        createLayeredBitmap(data.width, data.height, colorLayer, mainLayer)
+        createLayeredBitmap(data.width, data.height, colorLayer, mainLayer, indicatorsLayer)
     }
 
 

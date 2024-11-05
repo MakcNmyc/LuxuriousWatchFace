@@ -59,11 +59,18 @@ import javax.inject.Singleton
                     clickListenerType = SettingsAdapter.ClickListenerTypes.COLOR_PICK_LISTENER.toInt()
                 ),
                 SettingsData(
-                    id = UserSettings::accessoriesColor.toId(),
+                    id =  UserSettings::backgroundImage.toId(),
                     type = SettingsAdapter.TEXT_WITH_IMAGE,
-                    title = context.resources.getString(schema.accessoriesColor.displayNameResourceId),
-                    colorImage = settings.accessoriesColor,
-                    clickListenerType = SettingsAdapter.ClickListenerTypes.COLOR_PICK_LISTENER.toInt()
+                    title = context.resources.getString(R.string.setting_background_image),
+                    imageResource = settings.backgroundImage,
+                    clickListenerType = SettingsAdapter.ClickListenerTypes.IMAGE_PICK_LISTENER.toInt()
+                ),
+                SettingsData(
+                    id =  UserSettings::indicatorsImage.toId(),
+                    type = SettingsAdapter.TEXT_WITH_IMAGE,
+                    title = context.resources.getString(R.string.setting_indicators_image_name),
+                    imageResource = settings.indicatorsImage,
+                    clickListenerType = SettingsAdapter.ClickListenerTypes.IMAGE_PICK_LISTENER.toInt()
                 ),
                 SettingsData(
                     id = CustomData::topText.toId(),
@@ -76,13 +83,6 @@ import javax.inject.Singleton
                     type = SettingsAdapter.EDIT_TEXT,
                     title = context.resources.getString(R.string.setting_bottom_text_name),
                     text = settings.customData.bottomText,
-                ),
-                SettingsData(
-                    id =  UserSettings::backgroundImage.toId(),
-                    type = SettingsAdapter.TEXT_WITH_IMAGE,
-                    title = context.resources.getString(R.string.setting_background_image),
-                    imageResource = settings.backgroundImage,
-                    clickListenerType = SettingsAdapter.ClickListenerTypes.IMAGE_PICK_LISTENER.toInt()
                 ),
             )
         } ?: arrayListOf()

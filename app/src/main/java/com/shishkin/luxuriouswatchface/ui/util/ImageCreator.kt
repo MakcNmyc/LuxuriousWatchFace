@@ -2,20 +2,26 @@ package com.shishkin.luxuriouswatchface.ui.util
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.shishkin.luxuriouswatchface.R
-import com.shishkin.luxuriouswatchface.watchface.getResourceImage
+import com.shishkin.luxuriouswatchface.watchface.getBitmapFromResource
+import com.shishkin.luxuriouswatchface.watchface.getDrawableFromResource
+import com.shishkin.luxuriouswatchface.watchface.scaleImage
+import com.shishkin.luxuriouswatchface.watchface.toDrawable
 
 interface ImageCreator {
     fun create(context: Context) : Drawable
+    fun create(context: Context, newWidth: Int, newHeight: Int) : Drawable = create(context)
 }
 
 class ImageResourceCreator(private val  imageId: Int): ImageCreator{
     override fun create(context: Context) =
-        BitmapDrawable(context.resources, getResourceImage(context, imageId))
+        getDrawableFromResource(context, imageId)
+
+    override fun create(context: Context, newWidth: Int, newHeight: Int) =
+        getBitmapFromResource(context, imageId).scaleImage(newWidth, newHeight).toDrawable(context.resources)
 }
 
 fun Int.toImageResourceCreator() =

@@ -30,7 +30,7 @@ class ImagePickerFragment  : Fragment() {
     ): View =
         createBinding(inflater, container, ImagesListBinding::inflate)
             .also { binding ->
-                viewModel.initBackgroundImagesData(requireContext())
+                viewModel.initImagesData()
                 adapter.viewModel = viewModel
                 setUpBaseList(
                     binding.imagesList,

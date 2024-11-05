@@ -1,9 +1,12 @@
 package com.shishkin.luxuriouswatchface.watchface
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 
 fun Canvas.drawBitmap(bitmap: Bitmap){
     this.drawBitmap(
@@ -27,7 +30,7 @@ fun createColorBitmap(width: Int, height: Int, color: Int): Bitmap =
         Canvas(it).drawColor(color)
     }
 
-fun getResourceImage(context: Context, resourceId: Int, roundResourceId: Int? = null): Bitmap =
+fun getBitmapFromResource(context: Context, resourceId: Int, roundResourceId: Int? = null): Bitmap =
     if (roundResourceId != null && context.resources.configuration.isScreenRound) {
         roundResourceId
     } else {
@@ -35,6 +38,11 @@ fun getResourceImage(context: Context, resourceId: Int, roundResourceId: Int? = 
     }.let {
         BitmapFactory.decodeResource(context.resources, it)
     }
+
+fun getDrawableFromResource(context: Context, resourceId: Int): Drawable =
+   getBitmapFromResource(context, resourceId).toDrawable(context.resources)
+
+fun Bitmap.toDrawable(resources: Resources): Drawable = BitmapDrawable(resources, this)
 
 fun Bitmap.scaleImage(width: Int, height: Int): Bitmap = Bitmap.createScaledBitmap(
         this,

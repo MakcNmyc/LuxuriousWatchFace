@@ -124,8 +124,8 @@ class LuxuriousWatchFace : WatchFaceService() {
             renderData.init(RenderData.RenderDataInit(canvas))
 
             drawBackground(canvas)
-            drawHands(canvas, zonedDateTime, renderParameters.drawMode)
             drawTexts(canvas)
+            drawHands(canvas, zonedDateTime, renderParameters.drawMode)
         }
 
         private fun drawBackground(canvas: Canvas){
@@ -179,6 +179,7 @@ class LuxuriousWatchFace : WatchFaceService() {
 
         private fun drawTexts(canvas: Canvas){
             drawText(canvas, renderData.topTextData)
+            drawText(canvas, renderData.bottomTextData)
         }
 
         private fun drawText(canvas: Canvas, textData: RenderData.TextData) =
@@ -190,7 +191,7 @@ class LuxuriousWatchFace : WatchFaceService() {
                 canvas.drawText(
                     textData.text,
                     (canvas.width - paint.measureText(textData.text)) / 2f,
-                    canvas.height / 2f + textData.yCenterOffset,
+                    canvas.height / 2f - textData.yCenterOffset,
                     paint
                 )
             }
