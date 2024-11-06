@@ -23,6 +23,7 @@ data class CustomData(
     //max length = R.string.watchface_max_string_size
     var topText: String = "",
     var bottomText: String = "",
+    var middleText: String = "",
 )
 
 fun UserStyle.toUserSettings() : UserSettings{

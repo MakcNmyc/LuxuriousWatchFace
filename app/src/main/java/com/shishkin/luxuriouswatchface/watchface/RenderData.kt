@@ -13,6 +13,7 @@ data class RenderData(
     val minuteHandData: HandData,
     val secondHandData: HandData,
     val topTextData: TextData,
+    val middleTextData: TextData,
     val bottomTextData: TextData,
 ){
 

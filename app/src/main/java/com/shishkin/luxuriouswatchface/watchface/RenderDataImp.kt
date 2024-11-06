@@ -51,6 +51,13 @@ fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSet
             Color.BLACK,
         ),
         TextData(
+            renderSettings.customData.middleText,
+            R.dimen.middle_text_size.fromDimension(context),
+            R.dimen.middle_text_y_offset.fromDimension(context).toInt(),
+            font,
+            Color.BLACK,
+        ),
+        TextData(
             renderSettings.customData.bottomText,
             R.dimen.bottom_text_size.fromDimension(context),
             R.dimen.bottom_text_y_offset.fromDimension(context).toInt(),

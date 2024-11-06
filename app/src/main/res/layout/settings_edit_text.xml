@@ -33,7 +33,7 @@
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:maxLength="@integer/watchface_max_string_size"
+            android:maxLength="@integer/watchface_user_string_max_size"
             android:text="@={model.text}" />
 
     </LinearLayout>

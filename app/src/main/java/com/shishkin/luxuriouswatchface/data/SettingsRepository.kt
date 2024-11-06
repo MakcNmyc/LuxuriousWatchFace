@@ -79,6 +79,12 @@ import javax.inject.Singleton
                     text = settings.customData.topText,
                 ),
                 SettingsData(
+                    id =  CustomData::middleText.toId(),
+                    type = SettingsAdapter.EDIT_TEXT,
+                    title = context.resources.getString(R.string.setting_middle_text_name),
+                    text = settings.customData.middleText,
+                ),
+                SettingsData(
                     id =  CustomData::bottomText.toId(),
                     type = SettingsAdapter.EDIT_TEXT,
                     title = context.resources.getString(R.string.setting_bottom_text_name),

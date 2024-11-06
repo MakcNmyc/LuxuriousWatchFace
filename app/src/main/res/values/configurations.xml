@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="watchface_max_string_size">20</integer>
+    <integer name="watchface_user_string_max_size">20</integer>
 </resources>

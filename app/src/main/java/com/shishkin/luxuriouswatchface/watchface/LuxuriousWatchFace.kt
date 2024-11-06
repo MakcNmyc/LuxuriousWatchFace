@@ -179,6 +179,7 @@ class LuxuriousWatchFace : WatchFaceService() {
 
         private fun drawTexts(canvas: Canvas){
             drawText(canvas, renderData.topTextData)
+            drawText(canvas, renderData.middleTextData)
             drawText(canvas, renderData.bottomTextData)
         }
 
