@@ -2,7 +2,6 @@ package com.shishkin.luxuriouswatchface.adapters
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
@@ -80,8 +79,6 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         val model = dataModel.toSettingsTextWithImage()
         binding.model = model
 
-        Log.e("PICK_LISTENER", "image width is ${binding.root.resources.getDimension(R.dimen.grid_list_element_width)} in int ${binding.root.resources.getDimension(R.dimen.grid_list_element_width).toInt()}")
-
         model.rightImage?.let {
             binding.title.setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -95,7 +92,6 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
         }
 
         model.clickListenerType?.let { type ->
-            Log.e("PICK_LISTENER", "type is $type")
             when (type) {
                 ClickListenerTypes.COLOR_PICK_LISTENER -> createColorPickerListener(model.id)
                 ClickListenerTypes.IMAGE_PICK_LISTENER -> createImagePickerListener(model.id)
@@ -147,7 +143,6 @@ class SettingsAdapter @Inject constructor(itemCallback: ItemCallback<SettingsDat
     }
 
     private fun createImagePickerListener(settingsId: String) = View.OnClickListener { v ->
-        Log.e("PICK_LISTENER", "ImagePickerListener OnClick")
         Navigation.findNavController(v).navigate(
             SettingsFragmentDirections.actionSettingsToImagePicker(settingsId)
         )

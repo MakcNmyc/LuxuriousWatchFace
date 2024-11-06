@@ -12,7 +12,7 @@ import com.shishkin.luxuriouswatchface.watchface.RenderData.ImageProvider
 import com.shishkin.luxuriouswatchface.watchface.RenderData.ScaledResourceImageProvider
 import com.shishkin.luxuriouswatchface.watchface.RenderData.TextData
 
-fun createRenderData(context: Context, schema: SettingsSchema, settings: UserSettings? = null) : RenderData{
+fun createRenderData(context: Context, settings: UserSettings? = null) : RenderData{
 
     val renderSettings = settings ?: SettingsSchema.createDefaultUserSettings()
 
