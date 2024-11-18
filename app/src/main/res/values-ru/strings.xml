@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Luxurious watch face</string>
+    <string name="watchface_label">Luxurious</string>
+
+    <string name="settings_title">Все нестройки</string>
+    <string name="settings_top_text">Верхний текст</string>
+    <string name="settings_text_edit_hint">Введите текст здесь</string>
+
+    <string name="setting_background_color_name">Фоновый цвет</string>
+    <string name="setting_background_color_description">Фоновый цвет для часов</string>
+
+    <string name="setting_accessories_color_name">Цвет аксессуаров</string>
+    <string name="setting_accessories_color_description">Цвет для дополнительных аксессуаров на часах</string>
+
+    <string name="setting_top_text_name">Верхний текст</string>
+    <string name="setting_top_text_description">Текст выше центра циферблата</string>
+
+    <string name="setting_middle_text_name">Центральный текст</string>
+    <string name="setting_middle_text_description">Текст в центре циферблата</string>
+
+    <string name="setting_bottom_text_name">Нижний текст</string>
+    <string name="setting_bottom_text_description">Текст ниже цатра циферблата</string>
+
+    <string name="setting_background_image">Фоновая текстура</string>
+    <string name="setting_background_image_description">Фоновая текстура циферблата</string>
+
+    <string name="setting_custom_data_name">Пользовательские данные</string>
+    <string name="setting_custom_data_description">Дополнительные данные для кастомизации</string>
+
+    <string name="setting_indicators_image_name">Индикаторы</string>
+    <string name="setting_indicators_image_description">Индинтификаторы циферблата</string>
+</resources>

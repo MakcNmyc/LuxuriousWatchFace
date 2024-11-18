@@ -6,8 +6,6 @@
     <string name="settings_top_text">Top text</string>
     <string name="settings_text_edit_hint">Enter text here</string>
 
-    <string name="settings_changes_argument">settingsChanges</string>
-
     <string name="setting_background_color_name">Background color</string>
     <string name="setting_background_color_description">Background color for watch</string>
 
@@ -18,17 +16,19 @@
     <string name="setting_top_text_description">Text above the center of the watchface</string>
 
     <string name="setting_middle_text_name">Middle text</string>
-    <string name="setting_middle_text_description">Text below the top text on the watchface</string>
+    <string name="setting_middle_text_description">Text in the middle on the watchface</string>
 
     <string name="setting_bottom_text_name">Bottom text</string>
     <string name="setting_bottom_text_description">Text below the center of the watchface</string>
 
-    <string name="setting_background_image">Background image</string>
-    <string name="setting_background_image_description">Background watch face image</string>
+    <string name="setting_background_image">Background texture</string>
+    <string name="setting_background_image_description">Background watch face texture</string>
 
     <string name="setting_custom_data_name">Custom data</string>
     <string name="setting_custom_data_description">Additional data for application customisation</string>
 
     <string name="setting_indicators_image_name">Indicators</string>
     <string name="setting_indicators_image_description">Indicators on watchface</string>
+
+    <string name="settings_changes_argument" translatable="false">settingsChanges</string>
 </resources>
