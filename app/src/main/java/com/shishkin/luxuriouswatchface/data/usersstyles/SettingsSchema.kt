@@ -57,9 +57,9 @@ class SettingsSchema @Inject constructor() {
 
     // There store default settings
     companion object{
-        val DEFAULT_BACKGROUND_IMAGE = R.drawable.silver_background
-        val DEFAULT_INDICATORS_IMAGE = R.drawable.indicators_gold
-        val DEFAULT_BACKGROUND_COLOR = Color.BLACK
+        val DEFAULT_BACKGROUND_IMAGE = R.drawable.gold_background
+        val DEFAULT_INDICATORS_IMAGE = R.drawable.indicators_silver
+        val DEFAULT_BACKGROUND_COLOR = Color.TRANSPARENT
 
         const val DEFAULT_TOP_TEXT = ""
         const val DEFAULT_BOTTOM_TEXT = ""

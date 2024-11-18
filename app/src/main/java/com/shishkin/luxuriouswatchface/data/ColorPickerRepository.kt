@@ -9,6 +9,15 @@ class ColorPickerRepository @Inject constructor() {
 
     fun getBackGroundsColors(context: Context) =
          arrayListOf(
+             ColorPickElement(
+                 Color.WHITE,
+             ),
+             ColorPickElement(
+                 Color.BLACK,
+             ),
+             ColorPickElement(
+                 Color.TRANSPARENT,
+             ),
             ColorPickElement(
                 Color.RED,
             ),
@@ -21,6 +30,7 @@ class ColorPickerRepository @Inject constructor() {
             ColorPickElement(
                 Color.YELLOW,
             ),
+
         )
 
 }
