@@ -1,8 +1,7 @@
 <div align="center">
 
-<a href="https://aniyomi.org">
-    <img src="./.github/assets/logo.png" alt="Aniyomi logo" title="Aniyomi logo" width="80"/>
-</a>
+
+<img src="./.app/src/main/res/drawable/preview.png" alt="LuxuriousWatchFace logo" title="LuxuriousWatchFace logo" width="80"/>
 
 # LuxuriousWatchFace(#)
 
