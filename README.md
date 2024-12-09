@@ -1,7 +1,7 @@
 <div align="center">
 
 
-<img src="./.app/src/main/res/drawable/preview.png" alt="LuxuriousWatchFace logo" title="LuxuriousWatchFace logo" width="80"/>
+<img src="./app/src/main/res/drawable/preview.png" alt="LuxuriousWatchFace logo" title="LuxuriousWatchFace logo" width="80"/>
 
 # LuxuriousWatchFace(#)
 
